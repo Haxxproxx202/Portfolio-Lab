@@ -15,11 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from project.views import AddDonation, FormConfirmation, Index, Login, Register
+from project.views import AddDonation, FormConfirmation, LandingPage, Login, Register
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', Index.as_view()),
+    path('', LandingPage.as_view()),
     path('form/', AddDonation.as_view()),
     path('form_conf/', FormConfirmation.as_view()),
 
