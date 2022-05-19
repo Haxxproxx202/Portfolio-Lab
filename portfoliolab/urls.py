@@ -19,9 +19,10 @@ from project.views import Form, FormConfirmation, Index, Login, Register
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', Index.as_view()),
     path('form/', Form.as_view()),
     path('form_conf/', FormConfirmation.as_view()),
-    path('index/', Index.as_view()),
+
     path('login/', Login.as_view()),
     path('register/', Register.as_view()),
 ]
