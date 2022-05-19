@@ -3,7 +3,7 @@ from django.views import View
 
 # Create your views here.
 
-class Form(View):
+class AddDonation(View):
     def get(self, request):
         return render(request, "form.html")
 
