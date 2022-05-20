@@ -19,10 +19,9 @@ from project.views import AddDonation, FormConfirmation, LandingPage, Login, Reg
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LandingPage.as_view()),
-    path('form/', AddDonation.as_view()),
-    path('form_conf/', FormConfirmation.as_view()),
-
-    path('login/', Login.as_view()),
-    path('register/', Register.as_view()),
+    path('', LandingPage.as_view(), name='landing_page'),
+    path('form/', AddDonation.as_view(), name='donation'),
+    path('form_conf/', FormConfirmation.as_view(), name='confirmation'),
+    path('login/', Login.as_view(), name='login'),
+    path('register/', Register.as_view(), name='register'),
 ]
