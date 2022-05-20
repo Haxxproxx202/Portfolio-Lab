@@ -21,8 +21,13 @@ class LandingPage(View):
             sacks_qty += i.quantity
 
         inst_qty = Institution.objects.count()
+        all_fndn = Institution.objects.filter(type="1")
+        all_non_govt = Institution.objects.filter(type="2")
 
-        ctx = {'sacks_qty': sacks_qty, 'inst_qty': inst_qty}
+        ctx = {'sacks_qty': sacks_qty,
+               'inst_qty': inst_qty,
+               'all_fndn': all_fndn,
+               'all_non_govt': all_non_govt}
 
         return render(request, 'index.html', ctx)
 
@@ -33,3 +38,5 @@ class Login(View):
 class Register(View):
     def get(self, request):
         return render(request, 'register.html')
+
+# ubrania, jedzenie, sprzęt AGD, meble, zabawki, ubrania, meble, zabawki, ubrania, jedzenie, ciepłe koce
