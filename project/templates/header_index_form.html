@@ -1,0 +1,29 @@
+<nav class="container container--70">
+    {% if user.is_authenticated %}
+    <ul class="nav--actions">
+      <li class="logged-user">
+        Hello {{user.first_name}}
+        <ul class="dropdown">
+          <li><a href="#">Profile</a></li>
+          <li><a href="#">Settings</a></li>
+          <li><a href="{% url 'logout' %}">Log out</a></li>
+        </ul>
+      </li>
+    </ul>
+    {% else %}
+    <ul class="nav--actions">
+      <li><a href="{% url 'login' %}" class="btn btn--small btn--without-border">Log in</a></li>
+      <li><a href="{% url 'register' %}" class="btn btn--small btn--highlighted">Sign up</a></li>
+    </ul>
+    {% endif %}
+
+
+    <ul>
+      <li><a href="/" class="btn btn--without-border active">Start</a></li>
+      <li><a href="/#steps" class="btn btn--without-border">What is it about?</a></li>
+      <li><a href="/#about-us" class="btn btn--without-border">About us</a></li>
+      <li><a href="/#help" class="btn btn--without-border">Foundations and organisations</a></li>
+      <li><a href="{% url 'donation' %}" class="btn btn--without-border">Make a donation</a></li>
+      <li><a href="/#contact" class="btn btn--without-border">Contact us</a></li>
+    </ul>
+  </nav>

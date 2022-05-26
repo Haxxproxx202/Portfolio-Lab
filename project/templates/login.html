@@ -5,10 +5,10 @@
 
     <section class="login-page">
       <h2>Zaloguj się</h2>
+      <div style="color: red; font-size: 16px; text-align: center"><b>{{error}}</b></div>
       <form action="" method="POST">
         {% csrf_token %}
         {% if error %}
-        <div style="color: red; font-size: 16px">{{error}}</div>
         {% endif %}
 
         <div class="form-group">

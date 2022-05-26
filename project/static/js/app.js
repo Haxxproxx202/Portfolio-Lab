@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
+
+
   /**
    * HomePage - Help section
    */
@@ -218,6 +220,22 @@ document.addEventListener("DOMContentLoaded", function() {
      * Update form front-end
      * Show next or previous section etc.
      */
+
+    step_1_categories() {
+      let inputs = document.querySelector("form").firstElementChild.querySelectorAll("input")
+      let categories = []
+      inputs.forEach(input => {
+        if (input.checked === true) {
+          categories.push(input.parentElement.querySelector(".description").innerText)
+        }
+      })
+      return categories
+    }
+
+
+
+
+
     updateForm() {
       this.$step.innerText = this.currentStep;
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from project.models import Category, Institution, Donation
+from project.models import Category, Institution, Donation, INSTITUTION_TYPE
 from django.core.paginator import Paginator
 from django.views.generic import FormView
 from project.forms import RegisterForm
@@ -10,12 +10,25 @@ from django.contrib.auth import login, logout, authenticate
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.contrib.messages import constants as messages
+from django.template.defaulttags import register
 
-# Create your views here.
+
+@register.filter
+def get_value(value):
+    return value[1]
 
 class AddDonation(View):
     def get(self, request):
-        return render(request, 'form.html')
+        if request.user.is_authenticated:
+            categories = Category.objects.all()
+            institutions = Institution.objects.all()
+
+            ctx = {'categories': categories,
+                   'institutions': institutions,
+                   'inst_type': INSTITUTION_TYPE}
+            return render(request, 'form.html', ctx)
+        else:
+            return redirect('login')
 
 class FormConfirmation(View):
     def get(self, request):
@@ -93,6 +106,7 @@ class Register(FormView):
 
 
         return super().form_valid(form)
+
 
 
 #, sprzęt AGD, ciepłe koce
