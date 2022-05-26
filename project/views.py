@@ -1,12 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from project.models import Category, Institution, Donation
 from django.core.paginator import Paginator
 from django.views.generic import FormView
 from project.forms import RegisterForm
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect
+from django.contrib.messages import constants as messages
 
 # Create your views here.
 
@@ -49,6 +52,30 @@ class LandingPage(View):
 class Login(View):
     def get(self, request):
         return render(request, 'login.html')
+    def post(self, request):
+        email = request.POST.get('email')
+        pw = request.POST.get('password')
+
+        if not email or not pw:
+
+            error = "Fill in all fields"
+            return render(request, 'login.html', {'error': error})
+
+        logged_user = authenticate(username=email,
+                                   password=pw)
+
+        if logged_user is not None:
+            login(self.request, logged_user)
+            return redirect('donation')
+        else:
+            errot = ''
+            return redirect('register')
+
+
+class Logout(View):
+    def get(self, request):
+        logout(request)
+        return redirect('/')
 
 class Register(FormView):
     form_class = RegisterForm
@@ -56,15 +83,14 @@ class Register(FormView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        username = form.cleaned_data['username']
         name = form.cleaned_data['first_name']
         surname = form.cleaned_data['last_name']
         email = form.cleaned_data['email']
         pw = form.cleaned_data['pass2']
 
-        new_user = User.objects.create_user(username=username, first_name=name, last_name=surname, email=email, password=pw)
+        new_user = User.objects.create_user(username=email, first_name=name, last_name=surname, email=email, password=pw)
 
-        login(self.request, new_user)
+
 
         return super().form_valid(form)
 
