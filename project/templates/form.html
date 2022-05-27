@@ -115,7 +115,7 @@
             <input type="radio" name="organization" value="{{ i.id }}" />
             <span class="checkbox radio"></span>
             <span class="description">
-              <div class="title">{{ i.type }} “{{ i.name }}”</div>
+              <div class="title">{{ i.get_type_display }}: “{{ i.name }}”</div>
               <div class="subtitle">
                 Mission: {{ i.description }}
               </div>

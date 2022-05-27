@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-
+  console.log("DOM FULLY LOADED");
 
   /**
    * HomePage - Help section
@@ -222,11 +222,12 @@ document.addEventListener("DOMContentLoaded", function() {
      */
 
     step_1_categories() {
-      let inputs = document.querySelector("form").firstElementChild.querySelectorAll("input")
+      let inputs = document.querySelector("form").firstElementChild.querySelectorAll("input[name=categories]")
+
       let categories = []
       inputs.forEach(input => {
         if (input.checked === true) {
-          categories.push(input.parentElement.querySelector(".description").innerText)
+          categories.push(input.value)
         }
       })
       return categories

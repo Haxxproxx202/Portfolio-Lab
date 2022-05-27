@@ -2,9 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 INSTITUTION_TYPE = (
-    (1, "charitable foundation"),
-    (2, "non-governmental organisation"),
-    (3, "local fund-raiser")
+    (1, "Charitable foundation"),
+    (2, "Non-governmental organisation"),
+    (3, "Local fund-raiser")
 )
 
 class Category(models.Model):
