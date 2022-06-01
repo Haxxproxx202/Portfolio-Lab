@@ -24,8 +24,7 @@ class AddDonation(View):
             institutions = Institution.objects.all()
 
             ctx = {'categories': categories,
-                   'institutions': institutions,
-                   'inst_type': INSTITUTION_TYPE}
+                   'institutions': institutions}
             return render(request, 'form.html', ctx)
         else:
             return redirect('login')

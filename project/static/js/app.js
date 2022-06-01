@@ -233,11 +233,50 @@ document.addEventListener("DOMContentLoaded", function() {
       return categories
     }
 
+    step_2_data() {
+
+      let address = document.querySelector("input[name=address]").value
+      let city = document.querySelector("input[name=city]").value
+      let postalCode = document.querySelector("input[name=postcode]").value
+      let telNumb = document.querySelector("input[name=phone]").value
+      let date = document.querySelector("input[name=data]").value
+      let time = document.querySelector("input[name=time]").value
+      let comments = document.querySelector("textarea[name=more_info]").value
 
 
+      let form_2_data = {
+        "address":address,
+        "city":city,
+        "postalCode":postalCode,
+        "telNumb":telNumb,
+        "date":date,
+        "time":time,
+        "comments": comments,
+      }
+      return form_2_data
+    }
 
 
     updateForm() {
+
+
+
+
+
+      // console.log(this.step_1_categories(), ' These are the chosen categories...')
+      const chosenCategories = this.step_1_categories()
+      document.querySelectorAll('.institution').forEach(function (div) {
+        // console.log(div, div.dataset.categories)
+        const myArray = div.dataset.categories.split(" ")
+        const isIncluded = chosenCategories.some( item => myArray.includes(item))
+        if (isIncluded === false) {
+          div.style.display = "none";
+        } else {
+          div.style.display = "block";
+        }
+      })
+
+
       this.$step.innerText = this.currentStep;
 
       // TODO: Validation
@@ -254,6 +293,24 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$step.parentElement.hidden = this.currentStep >= 6;
 
       // TODO: get data from inputs and show them in summary
+
+      let summaryButton = document.querySelector(".summary-button")
+      summaryButton.addEventListener("click", evt => {
+        let step_3_divs = document.querySelectorAll(".institution")
+        let institution = ""
+        step_3_divs.forEach(div => {
+          if (div.querySelector("input").checked) {
+            institution = div.querySelector(".title").innerText
+          }
+        })
+        let numberOfBags = document.querySelector("div [data-step='2'] input").value
+
+        console.log(numberOfBags)
+        let summary = document.querySelector(".summary")
+        summary.querySelector(".icon-bag").nextElementSibling.innerText = numberOfBags
+      })
+
+
     }
 
     /**
