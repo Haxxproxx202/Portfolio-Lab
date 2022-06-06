@@ -18,7 +18,7 @@ from django.urls import path
 from project.views import AddDonation, FormConfirmation, LandingPage, Login, Register, Logout
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin:index'),
     path('', LandingPage.as_view(), name='landing_page'),
     path('form/', AddDonation.as_view(), name='donation'),
     path('form_conf/', FormConfirmation.as_view(), name='confirmation'),

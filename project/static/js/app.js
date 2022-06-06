@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-  console.log("DOM FULLY LOADED");
 
   /**
    * HomePage - Help section
@@ -233,25 +232,19 @@ document.addEventListener("DOMContentLoaded", function() {
       return categories
     }
 
+
     step_2_data() {
 
-      let address = document.querySelector("input[name=address]").value
-      let city = document.querySelector("input[name=city]").value
-      let postalCode = document.querySelector("input[name=postcode]").value
-      let telNumb = document.querySelector("input[name=phone]").value
-      let date = document.querySelector("input[name=data]").value
-      let time = document.querySelector("input[name=time]").value
-      let comments = document.querySelector("textarea[name=more_info]").value
-
+      // let address = document.querySelector("form").elements.address.value
 
       let form_2_data = {
-        "address":address,
-        "city":city,
-        "postalCode":postalCode,
-        "telNumb":telNumb,
-        "date":date,
-        "time":time,
-        "comments": comments,
+        "address":document.querySelector("input[name=address]").value,
+        "city":document.querySelector("input[name=city]").value,
+        "postalCode":document.querySelector("input[name=postcode]").value,
+        "telNumb":document.querySelector("input[name=phone]").value,
+        "date":document.querySelector("input[name=data]").value,
+        "time":document.querySelector("input[name=time]").value,
+        "comments": document.querySelector("textarea[name=more_info]").value,
       }
       return form_2_data
     }
@@ -259,27 +252,72 @@ document.addEventListener("DOMContentLoaded", function() {
 
     updateForm() {
 
-
-
-
-
-      // console.log(this.step_1_categories(), ' These are the chosen categories...')
-      const chosenCategories = this.step_1_categories()
-      document.querySelectorAll('.institution').forEach(function (div) {
-        // console.log(div, div.dataset.categories)
-        const myArray = div.dataset.categories.split(" ")
-        const isIncluded = chosenCategories.some( item => myArray.includes(item))
-        if (isIncluded === false) {
-          div.style.display = "none";
-        } else {
-          div.style.display = "block";
-        }
-      })
-
-
       this.$step.innerText = this.currentStep;
 
-      // TODO: Validation
+
+      if (this.$step.innerText === "3") {
+
+        // console.log(this.step_1_categories(), ' These are the chosen categories...')
+        const chosenCategories = this.step_1_categories()
+        document.querySelectorAll('.institution').forEach(function (div) {
+          // console.log(div, div.dataset.categories)
+          const myArray = div.dataset.categories.split(" ")
+          const isIncluded = chosenCategories.some( item => myArray.includes(item))
+          if (isIncluded === false) {
+            div.style.display = "none";
+          } else {
+            div.style.display = "block";
+          }
+        })
+      }
+
+      if (this.$step.innerText === "4") {
+
+          let categoriesNames = []
+        let checkedCategories = document.querySelector("form").firstElementChild.querySelectorAll("input[name=categories]")
+        checkedCategories.forEach(item => {
+          if (item.checked === true) {
+            categoriesNames.push(item.nextElementSibling.nextElementSibling.innerText)
+
+          }
+        })
+        console.log(categoriesNames)
+
+        let summaryButton = document.querySelector(".summary-button")
+        summaryButton.addEventListener("click", evt => {
+          let step_3_divs = document.querySelectorAll(".institution")
+          let institution = ""
+          step_3_divs.forEach(div => {
+            if (div.querySelector("input").checked) {
+              institution = div.querySelector(".title").innerText
+            }
+          })
+          document.querySelector(".checked_org").value = institution
+          let numberOfBags = document.querySelector("div [data-step='2'] input").value
+          if (numberOfBags <= 1) {
+            numberOfBags = numberOfBags + " bag with: "
+          } else {
+            numberOfBags = numberOfBags + " bags with: "
+          }
+
+          let recipient = "For " + institution
+
+          console.log(numberOfBags)
+          let summary = document.querySelector(".summary");
+          summary.querySelector(".icon-bag").nextElementSibling.innerText = numberOfBags;
+          summary.querySelector(".icon-hand").nextElementSibling.innerText = recipient;
+
+          summary.lastElementChild.firstElementChild.querySelector("ul").innerHTML = `
+            <li>${this.step_2_data().address}</li>
+            <li>${this.step_2_data().city}</li>
+            <li>${this.step_2_data().postalCode}</li>
+            <li>${this.step_2_data().telNumb}</li>`
+            summary.lastElementChild.lastElementChild.querySelector("ul").innerHTML = `
+            <li>${this.step_2_data().date}</li>
+            <li>${this.step_2_data().time}</li>
+            <li>${this.step_2_data().comments}</li>`
+        })
+      }
 
       this.slides.forEach(slide => {
         slide.classList.remove("active");
@@ -290,27 +328,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
 
       this.$stepInstructions[0].parentElement.parentElement.hidden = this.currentStep >= 6;
-      this.$step.parentElement.hidden = this.currentStep >= 6;
-
-      // TODO: get data from inputs and show them in summary
-
-      let summaryButton = document.querySelector(".summary-button")
-      summaryButton.addEventListener("click", evt => {
-        let step_3_divs = document.querySelectorAll(".institution")
-        let institution = ""
-        step_3_divs.forEach(div => {
-          if (div.querySelector("input").checked) {
-            institution = div.querySelector(".title").innerText
-          }
-        })
-        let numberOfBags = document.querySelector("div [data-step='2'] input").value
-
-        console.log(numberOfBags)
-        let summary = document.querySelector(".summary")
-        summary.querySelector(".icon-bag").nextElementSibling.innerText = numberOfBags
-      })
-
-
+        this.$step.parentElement.hidden = this.currentStep >= 6;
     }
 
     /**
@@ -319,9 +337,11 @@ document.addEventListener("DOMContentLoaded", function() {
      * TODO: validation, send data to server
      */
     submit(e) {
-      e.preventDefault();
+      // e.preventDefault();
       this.currentStep++;
       this.updateForm();
+      document.querySelector(".categories_all").value = this.step_1_categories()
+
     }
   }
   const form = document.querySelector(".form--steps");

@@ -53,14 +53,13 @@
   </div>
 
   <div class="form--steps-container">
-    <div class="form--steps-counter">Step <span>1</span>/5</div>
+    <div class="form--steps-counter">Step <span>1</span>{% if error %}<p style="text-align: center; color: red"><b>{{error}}</b></p>{% endif %}</div>
 
 
 
 
+    <form action="" method="POST">
 
-
-    <form action="form-confirmation.html" method="POST">
       <!-- STEP 1: class .active is switching steps -->
       <div data-step="1" class="active">
         <h3>Mark what you want to give away:</h3>
@@ -80,6 +79,7 @@
           </label>
         </div>
         {% endfor %}
+        <input name= "checked_categories" class="categories_all" type="hidden" value="">
 
         <div class="form-group form-group--buttons">
           <button type="button" class="btn next-step">Next</button>
@@ -115,7 +115,7 @@
             <input type="radio" name="organization" value="{{ i.id }}" />
             <span class="checkbox radio"></span>
             <span class="description">
-              <div class="title">{{ i.get_type_display }}: “{{ i.name }}”</div>
+              <div class="title">“<b>{{ i.name }}</b>”<span style="font-size: 13px; color: #7F8177"> -- {{ i.get_type_display }}</span> </div>
               <div class="subtitle">
                 Mission: {{ i.description }}
               </div>
@@ -123,6 +123,7 @@
           </label>
         </div>
         {% endfor %}
+        <input type="hidden" name="checked_organization" class="checked_org" value="">
 <!--         document.querySelectorAll('.institution')[0].dataset.categories -->
         <div class="form-group form-group--buttons">
           <button type="button" class="btn prev-step">Previous</button>
@@ -136,7 +137,7 @@
 
         <div class="form-section form-section--columns">
           <div class="form-section--column">
-            <h4>Adres odbioru</h4>
+            <h4>Address</h4>
             <div class="form-group form-group--inline">
               <label> Street <input type="text" name="address" /> </label>
             </div>
@@ -197,38 +198,39 @@
 
               <li>
                 <span class="icon icon-hand"></span>
-                <span class="summary--text">Dla fundacji "Mam marzenie" w Warszawie</span>
+                <span class="summary--text"></span>
               </li>
             </ul>
           </div>
 
           <div class="form-section form-section--columns">
             <div class="form-section--column">
-              <h4>Adres odbioru:</h4>
+              <h4>Pick-up location:</h4>
               <ul>
-                <li>Prosta 51</li>
-                <li>Warszawa</li>
-                <li>99-098</li>
-                <li>123 456 789</li>
+                <li></li>
+                <li id="id2"><input name="city_submit" type="hidden" value="dsa"></li>
+                <li id="id3"><input name="postcode_submit" type="hidden" value=""></li>
+                <li id="id4"><input name="tel_submit" type="hidden" value=""></li>
               </ul>
             </div>
 
             <div class="form-section--column">
-              <h4>Termin odbioru:</h4>
-              <ul>
-                <li>13/12/2018</li>
-                <li>15:40</li>
-                <li>Brak uwag</li>
+              <h4>Pick-up date:</h4>
+              <ul id="myList2">
+                <li id="id5"><input name="date_submit" type="hidden" value=""></li>
+                <li id="id6"><input name="time_submit" type="hidden" value=""></li>
+                <li id="id7"><input name="comments_submit" type="hidden" value=""></li>
               </ul>
             </div>
           </div>
         </div>
 
         <div class="form-group form-group--buttons">
-          <button type="button" class="btn prev-step">Wstecz</button>
-          <button type="submit" class="btn">Potwierdzam</button>
+          <button type="button" class="btn prev-step">Previous</button>
+          <button type="submit" class="btn">Confirm</button>
         </div>
       </div>
+      {% csrf_token %}
     </form>
   </div>
 </section>

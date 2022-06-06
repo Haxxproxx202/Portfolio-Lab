@@ -29,6 +29,44 @@ class AddDonation(View):
         else:
             return redirect('login')
 
+    def post(self, request):
+        checked_categories = request.POST.get('checked_categories')
+        checked_categories_list = checked_categories.split(",")
+        number_of_bags = request.POST.get("bags")
+        organization = request.POST.get("organization")
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        postcode = request.POST.get('postcode')
+        phone = request.POST.get('phone')
+        date = request.POST.get('data')
+        time = request.POST.get('time')
+        more_info = request.POST.get('more_info')
+
+        if checked_categories != "" and number_of_bags != "" and organization and address != "" \
+                and city != "" and postcode != "" and phone != "" and date != "" and time != "":
+
+            full_address = address + ", " + city
+            org = Institution.objects.get(id=organization)
+            category = Category.objects.get(id=checked_categories_list[0])
+            user = User.objects.get(id=request.user.id)
+
+            donation = Donation.objects.create(quantity=number_of_bags,
+                                               institution=org,
+                                               address=full_address,
+                                               phone_number=phone,
+                                               zip_code=postcode,
+                                               pick_up_date=date,
+                                               pick_up_time=time,
+                                               pick_up_comment=more_info,
+                                               user=user)
+
+
+            return render(request, 'form-confirmation.html')
+        else:
+            error = "Fill in the entire form correctly, please."
+            return render(request, 'form.html', {'error': error})
+
+
 class FormConfirmation(View):
     def get(self, request):
         return render(request, 'form-confirmation.html')

@@ -6,7 +6,8 @@
         <ul class="dropdown">
           <li><a href="#">Profile</a></li>
           <li><a href="#">Settings</a></li>
-          <li><a href="{% url 'logout' %}">Log out</a></li>
+            {% if user.is_superuser %}<li><a href="{% url 'admin:index' %}">Control panel</a></li>{% endif %}
+            <li><a href="{% url 'logout' %}">Log out</a></li>
         </ul>
       </li>
     </ul>
