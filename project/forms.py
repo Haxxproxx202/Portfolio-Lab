@@ -15,3 +15,15 @@ class RegisterForm(forms.Form):
             raise ValidationError("The passwords you typed in do not match. Try again, please.")
         else:
             return super().clean()
+
+class ChangePwForm(forms.Form):
+    old_pw = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Old password'}))
+    new_pw_1 = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
+    new_pw_2 = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Reenter new pasword'}))
+
+    def clean(self):
+        if self.data['new_pw_1'] != self.data['new_pw_2']:
+            raise ValidationError('You typed two different passwords. Try again, please')
+        else:
+            return super().clean()
+

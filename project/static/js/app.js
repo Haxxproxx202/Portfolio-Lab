@@ -1,8 +1,21 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+  document.querySelector(".right--profile input[name='send_button']").addEventListener("click", () => {
+    let pw = document.querySelector(".right--profile input[name='pass']")
+    let pw_given = prompt("Enter your password")
+    let txt;
+    if (pw_given) {
+      pw.value = pw_given
+    }
+  })
+
   /**
    * HomePage - Help section
    */
+
+
+
+
   class Help {
     constructor($el) {
       this.$el = $el;

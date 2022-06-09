@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<header class="header--form-page">
+
+    {% include 'header_index_form.html' %}
+
+
+    <div class="pw--change">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <div class="pw--change--box">
+                <p>{{form.old_pw}}</p>
+                <p>{{form.new_pw_1}}</p>
+                <p>{{form.new_pw_2}}</p>
+                <input type="submit" value="Save">
+            </div>
+        </form>
+    </div>
+
+
+
+
+
+</header>
+
+{% endblock %}

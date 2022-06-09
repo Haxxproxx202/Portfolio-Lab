@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<header class="header--form-page">
+    {% include 'header_index_form.html' %}
+    <h1>Edit profile</h1>
+    <div class="mainnn">
+        <div class="left--profile">
+            <div>Username / email:</div>
+            <div>First name:</div>
+            <div>Last name:</div>
+        </div>
+        <div class="right--profile" style="font-size: 19px;">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input name="username" value="{{user.username}}"/>
+                <input name="first_name" value="{{user.first_name}}"/>
+                <input name="last_name" value="{{user.last_name}}"/>
+                <input name="pass" type="hidden" value=""/>
+                <input name= "send_button" type="submit" value="Save">
+            </form>
+        </div>
+
+    </div>
+    <div class="change--pw">
+        <a href="{% url 'change-pw' %}">Change password</a>
+    </div>
+
+
+
+
+</header>
+
+
+{% endblock %}

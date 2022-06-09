@@ -1,16 +1,17 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from project.models import Category, Institution, Donation, INSTITUTION_TYPE
 from django.core.paginator import Paginator
-from django.views.generic import FormView
-from project.forms import RegisterForm
+from django.views.generic import FormView, UpdateView
+from project.forms import RegisterForm, ChangePwForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.contrib.messages import constants as messages
 from django.template.defaulttags import register
+from django.contrib.auth.hashers import check_password
 
 
 @register.filter
@@ -143,6 +144,59 @@ class Register(FormView):
 
 
         return super().form_valid(form)
+
+class UserProfil(View):
+    def get(self, request):
+        return render(request, 'user_profile.html')
+
+class UserSettings(View):
+    def get(self, request):
+        return render(request, 'user_profile_edit.html')
+    def post(self, request):
+        username = request.POST.get('username')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        password = request.POST.get('pass')
+        if check_password(password, request.user.password):
+
+            user = User.objects.get(id=request.user.id)
+            user.username = username
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+
+            return redirect('profile')
+
+        else:
+            error = "Type in a correct password"
+            return render(request, 'user_profile_edit.html', {'error': error})
+
+class UserChangePw(FormView):
+    form_class = ChangePwForm
+    template_name = 'change_pw.html'
+
+    def form_valid(self, form):
+        old = form.cleaned_data['old_pw']
+        new1 = form.cleaned_data['new_pw_1']
+        user = User.objects.get(id=self.request.user.id)
+
+        if check_password(old, user.password):
+            user.set_password(new1)
+            user.save()
+            update_session_auth_hash(self.request, user)
+
+            return redirect('profile')
+        else:
+            return reverse_lazy('change-pw')
+
+
+
+
+
+
+
+
+
 
 
 

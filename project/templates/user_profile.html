@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<header class="header--form-page">
+  {% include 'header_index_form.html' %}
+    <h1>User profile</h1>
+    <div class="mainnn">
+        <div class="left--profile">
+            <div>Username / email:</div>
+            <div>First name:</div>
+            <div>Last name:</div>
+            <div>Account creation date:</div>
+        </div>
+        <div class="right--profile">
+            <div>{{user.username}}</div>
+            <div>{{user.first_name}}</div>
+            <div>{{user.last_name}}</div>
+            <div>{{user.date_joined}}</div>
+        </div>
+    </div>
+
+</header>
+
+{% endblock %}
