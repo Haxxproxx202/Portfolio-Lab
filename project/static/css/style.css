@@ -1884,7 +1884,13 @@ footer .bottom-line--icons a img {
 .pw--change--box p {
   display: flex;
   align-items: center;
+}
 
+.error--password {
+  color: red;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 10%;
 }
 
 

@@ -14,10 +14,6 @@ from django.template.defaulttags import register
 from django.contrib.auth.hashers import check_password
 
 
-@register.filter
-def get_value(value):
-    return value[1]
-
 class AddDonation(View):
     def get(self, request):
         if request.user.is_authenticated:
@@ -31,8 +27,6 @@ class AddDonation(View):
             return redirect('login')
 
     def post(self, request):
-        checked_categories = request.POST.get('checked_categories')
-        checked_categories_list = checked_categories.split(",")
         number_of_bags = request.POST.get("bags")
         organization = request.POST.get("organization")
         address = request.POST.get('address')
@@ -43,12 +37,14 @@ class AddDonation(View):
         time = request.POST.get('time')
         more_info = request.POST.get('more_info')
 
-        if checked_categories != "" and number_of_bags != "" and organization and address != "" \
-                and city != "" and postcode != "" and phone != "" and date != "" and time != "":
+        cats_list = request.POST.getlist('categories')
+
+        if cats_list and number_of_bags != "" and organization and address != "" \
+                and city != "" and postcode != "" and isinstance(postcode, int) \
+                and phone != "" and isinstance(phone, int) and date != "" and time != "":
 
             full_address = address + ", " + city
             org = Institution.objects.get(id=organization)
-            category = Category.objects.get(id=checked_categories_list[0])
             user = User.objects.get(id=request.user.id)
 
             donation = Donation.objects.create(quantity=number_of_bags,
@@ -60,12 +56,19 @@ class AddDonation(View):
                                                pick_up_time=time,
                                                pick_up_comment=more_info,
                                                user=user)
-
+            for i in cats_list:
+                cat = Category.objects.get(id=i)
+                donation.categories.add(cat)
 
             return render(request, 'form-confirmation.html')
         else:
-            error = "Fill in the entire form correctly, please."
-            return render(request, 'form.html', {'error': error})
+            categories = Category.objects.all()
+            institutions = Institution.objects.all()
+
+            ctx = {'categories': categories,
+                   'institutions': institutions,
+                   'error': 'Fill in the entire form correctly, please.'}
+            return render(request, 'form.html', ctx)
 
 
 class FormConfirmation(View):
@@ -188,6 +191,7 @@ class UserChangePw(FormView):
             return redirect('profile')
         else:
             return reverse_lazy('change-pw')
+
 
 
 

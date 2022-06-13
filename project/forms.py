@@ -19,7 +19,7 @@ class RegisterForm(forms.Form):
 class ChangePwForm(forms.Form):
     old_pw = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Old password'}))
     new_pw_1 = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
-    new_pw_2 = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Reenter new pasword'}))
+    new_pw_2 = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Reenter new password'}))
 
     def clean(self):
         if self.data['new_pw_1'] != self.data['new_pw_2']:

@@ -1,13 +1,30 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-  document.querySelector(".right--profile input[name='send_button']").addEventListener("click", () => {
+  const passwordButton = document.querySelector(".pw--change--box input[name='niccc']")
+  const settingsButton = document.querySelector(".right--profile input[name='send_button']")
+
+  function passwordButtonFunction(event) {
+    let errorMsg = document.querySelector(".error--password")
+    if (errorMsg.childNodes.length !== 0) {
+      alert("xxx")
+    }
+  }
+
+  function settingsButtonFunction(event) {
     let pw = document.querySelector(".right--profile input[name='pass']")
     let pw_given = prompt("Enter your password")
-    let txt;
     if (pw_given) {
-      pw.value = pw_given
+      pw.value = pw_given;
     }
-  })
+  }
+
+
+  // this.passwordButton.addEventListener("click", passwordButtonFunction);
+  // this.settingsButton.addEventListener("click", settingsButtonFunction);
+
+
+
+
 
   /**
    * HomePage - Help section
