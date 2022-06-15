@@ -18,6 +18,26 @@
             <div>{{user.last_name}}</div>
             <div>{{user.date_joined}}</div>
         </div>
+
+    </div>
+    <div class="given--items--list">
+        <div class="table--title">List of all donations you have made</div>
+        <table class="table--donations">
+            <tr class="table--headlines">
+                <td>Number of bags</td>
+                <td>Organization</td>
+                <td>Categories</td>
+                <td>Pick up date</td>
+            </tr>
+            {% for i in user_donations %}
+            <tr>
+                <td>{{i.quantity}}</td>
+                <td>"{{i.institution.name}}"</td>
+                <td style="font-size: 15px">{% for x in i.categories.all %} |{{x}}| {% endfor %}</td>
+                <td>{{i.pick_up_date}} // {{i.pick_up_time}}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 
 </header>

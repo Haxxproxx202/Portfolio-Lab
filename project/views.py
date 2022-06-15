@@ -150,7 +150,11 @@ class Register(FormView):
 
 class UserProfil(View):
     def get(self, request):
-        return render(request, 'user_profile.html')
+        user = User.objects.get(id=request.user.id)
+        user_donations = Donation.objects.filter(user=request.user.id)
+        ctx = {"user_donations": user_donations}
+
+        return render(request, 'user_profile.html', ctx)
 
 class UserSettings(View):
     def get(self, request):
