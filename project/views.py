@@ -158,8 +158,10 @@ class UserProfil(View):
 
 class UserSettings(View):
     def get(self, request):
+        
         return render(request, 'user_profile_edit.html')
     def post(self, request):
+
         username = request.POST.get('username')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
