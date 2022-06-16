@@ -21,7 +21,7 @@
 
     </div>
     <div class="given--items--list">
-        <div class="table--title">List of all donations you have made</div>
+        <div class="table--title">List of all donations you made</div>
         <table class="table--donations">
             <tr class="table--headlines">
                 <td>Number of bags</td>
@@ -38,7 +38,7 @@
                     <td>"{{i.institution.name}}"</td>
                     <td style="font-size: 15px">{% for x in i.categories.all %} |{{x}}| {% endfor %}</td>
                     <td>{{i.pick_up_date}} // {{i.pick_up_time}}</td>
-                    <td><button type="submit" class="archive--box" name="archive_box">+</button></td>
+                    <td><button type="submit" class="archive--box" name="archive_box">+++</button></td>
                 </form>
 
             </tr>
