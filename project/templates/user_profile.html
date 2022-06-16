@@ -28,13 +28,19 @@
                 <td>Organization</td>
                 <td>Categories</td>
                 <td>Pick up date</td>
+                <td>Archive</td>
             </tr>
             {% for i in user_donations %}
             <tr>
-                <td>{{i.quantity}}</td>
-                <td>"{{i.institution.name}}"</td>
-                <td style="font-size: 15px">{% for x in i.categories.all %} |{{x}}| {% endfor %}</td>
-                <td>{{i.pick_up_date}} // {{i.pick_up_time}}</td>
+                <form action="" method="POST" id="archiveForm">
+                    {% csrf_token %}
+                    <td>{{i.quantity}}</td>
+                    <td>"{{i.institution.name}}"</td>
+                    <td style="font-size: 15px">{% for x in i.categories.all %} |{{x}}| {% endfor %}</td>
+                    <td>{{i.pick_up_date}} // {{i.pick_up_time}}</td>
+                    <td><button type="submit" class="archive--box" name="archive_box">+</button></td>
+                </form>
+
             </tr>
             {% endfor %}
         </table>

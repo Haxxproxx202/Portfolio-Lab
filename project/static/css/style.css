@@ -1837,7 +1837,7 @@ footer .bottom-line--icons a img {
 .mainnn {
   display: flex;
   align-items: center;
-
+  margin-bottom: 95px;
 }
 
 .left--profile {
@@ -1864,28 +1864,51 @@ footer .bottom-line--icons a img {
   background-color: #9a9a9a;
   font-size: 25px;
   color: white;
-  margin-top: 2%;
-  border-radius: 5px;
+  margin-top: 4%;
+  border-radius: 3px;
   padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+}
+.right--profile div {
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+}
+.right--profile input:hover {
+  background-color: #f1f1f1;
+}
+
+.change--pw {
+  display: flex;
+  margin-top: 30px;
+
 }
 
 .change--pw a {
-  position: absolute;
   font-size: 15px;
   color: #1876f2;
-  top: 80%;
-  left: 42%;
+  margin: 20px auto 110px auto;
 }
 
 .pw--change {
   display: flex;
   justify-content: center;
   border: 1px solid black;
-  margin-top: 13%;
+  border-radius: 3px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-bottom: 150px;
 }
+
 .pw--change--box p {
   display: flex;
   align-items: center;
+  font-size: 20px;
 }
 
 .error--password {
@@ -1927,6 +1950,19 @@ table, th, td {
 .table--donations {
   margin-left: auto;
   margin-right: auto;
+}
+.table--donations button {
+  background-color: green;
+  border: 1px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 24px;
+  color: white;
+  font-size: 10px;
+}
+.table--donations button:hover {
+  transform: scale(1.2) perspective(1px);
+  transition: padding-left 0.5s, background 0.5s;
 }
 
 

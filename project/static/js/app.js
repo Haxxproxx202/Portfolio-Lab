@@ -17,10 +17,15 @@ document.addEventListener("DOMContentLoaded", function() {
       pw.value = pw_given;
     }
   }
+  // passwordButton.addEventListener("click", passwordButtonFunction);
+  // settingsButton.addEventListener("click", settingsButtonFunction);
 
+  document.querySelectorAll(".table--donations button").forEach(element => {
+    element.addEventListener("click", function () {
+      this.parentElement.parentElement.style.backgroundColor = "#f1f1f1"
+    })
+  })
 
-  // this.passwordButton.addEventListener("click", passwordButtonFunction);
-  // this.settingsButton.addEventListener("click", settingsButtonFunction);
 
 
 

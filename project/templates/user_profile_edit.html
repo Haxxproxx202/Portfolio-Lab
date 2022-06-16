@@ -11,14 +11,14 @@
             <div>First name:</div>
             <div>Last name:</div>
         </div>
-        <div class="right--profile" style="font-size: 19px;">
+        <div class="right--profile">
             <form action="" method="POST">
                 {% csrf_token %}
-                <input name="username" value="{{user.username}}"/>
-                <input name="first_name" value="{{user.first_name}}"/>
-                <input name="last_name" value="{{user.last_name}}"/>
+                <div><input name="username" value="{{user.username}}"/></div>
+                <div><input name="first_name" value="{{user.first_name}}"/></div>
+                <div><input name="last_name" value="{{user.last_name}}"/></div>
                 <input name="pass" type="hidden" value=""/>
-                <input name= "send_button" type="submit" value="Save">
+                <div><input name= "send_button" type="submit" value="Save"></div>
             </form>
         </div>
 
