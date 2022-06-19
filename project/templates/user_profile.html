@@ -21,7 +21,7 @@
 
     </div>
     <div class="given--items--list">
-        <div class="table--title">List of all donations you made</div>
+        <div class="table--title">List of all donations you have made</div>
         <table class="table--donations">
             <tr class="table--headlines">
                 <td>Number of bags</td>
@@ -32,13 +32,28 @@
             </tr>
             {% for i in user_donations %}
             <tr>
-                <form action="" method="POST" id="archiveForm">
+                <form id="archiveForm">
                     {% csrf_token %}
                     <td>{{i.quantity}}</td>
                     <td>"{{i.institution.name}}"</td>
                     <td style="font-size: 15px">{% for x in i.categories.all %} |{{x}}| {% endfor %}</td>
                     <td>{{i.pick_up_date}} // {{i.pick_up_time}}</td>
-                    <td><button type="submit" class="archive--box" name="archive_box">+++</button></td>
+                    <input type="hidden" id="inst_id" name="inst_id" value="{{i.id}}">
+                    <td><button type="submit" class="archive--box" name="archive_box" value="{{i.id}}">+</button></td>
+                </form>
+
+            </tr>
+            {% endfor %}
+            {% for i in user_donations_archive %}
+            <tr style="color: #7F8177">
+                <form id="unarchiveForm">
+                    {% csrf_token %}
+                    <td>{{i.quantity}}</td>
+                    <td>"{{i.institution.name}}"</td>
+                    <td style="font-size: 15px">{% for x in i.categories.all %} |{{x}}| {% endfor %}</td>
+                    <td>{{i.pick_up_date}} // {{i.pick_up_time}}</td>
+                    <input type="hidden" id="uninst_id" name="uninst_id" value="{{i.id}}">
+                    <td><button type="submit" class="unarchive--box" name="unarchive_box" value="{{i.id}}">+</button></td>
                 </form>
 
             </tr>
@@ -47,5 +62,10 @@
     </div>
 
 </header>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous">
+</script>
 
 {% endblock %}
+

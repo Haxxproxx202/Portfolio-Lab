@@ -1921,6 +1921,7 @@ footer .bottom-line--icons a img {
   font-size: 18px;
   margin-top: 50px;
   text-align: center;
+  color: black;
 
 }
 
@@ -1954,7 +1955,7 @@ table, th, td {
 .table--donations button {
   background-color: green;
   border: 1px solid black;
-  border-radius: 50%;
+  border-radius: 30%;
   cursor: pointer;
   margin-left: 24px;
   color: white;
@@ -1963,6 +1964,15 @@ table, th, td {
 .table--donations button:hover {
   transform: scale(1.2) perspective(1px);
   transition: padding-left 0.5s, background 0.5s;
+}
+.table--donations button[name=unarchive_box] {
+  background-color: red;
+  border: 1px solid black;
+  border-radius: 30%;
+  cursor: pointer;
+  margin-left: 24px;
+  color: white;
+  font-size: 12px;
 }
 
 

@@ -1,5 +1,73 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+  document.querySelectorAll(".unarchive--box").forEach(element2 => {
+        element2.addEventListener("click", function (ee) {
+            $(document).one('submit', element2, function (fff) {
+                fff.preventDefault()
+                $.ajax({
+                    type:'POST',
+                    url:'/create/',
+                    data:{
+                      id:$(element2).val(),
+                      csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+
+                    },
+                    success: function () {
+
+                    },
+                });
+            });
+            let rodzicc = element2.parentElement.parentElement;
+            if (rodzicc.style.color === "" || rodzicc.style.color === "black") {
+              rodzicc.style.color = "#7F8177"
+            } else {
+              rodzicc.style.color = "black"
+            }
+
+            if (element2.style.backgroundColor === "red" || element2.style.backgroundColor === "") {
+              element2.style.backgroundColor = "green";
+            } else {
+              element2.style.backgroundColor = "red"
+            }
+
+
+        });
+    });
+
+  document.querySelectorAll(".archive--box").forEach(element => {
+        element.addEventListener("click", function (e) {
+            $(document).one('submit', element, function (ff) {
+                ff.preventDefault()
+                $.ajax({
+                    type:'POST',
+                    url:'/create/',
+                    data:{
+                      id:$(element).val(),
+                      csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+
+                    },
+                    success: function () {
+
+                    },
+                });
+            });
+            let rodzic = element.parentElement.parentElement;
+            if (rodzic.style.color === "" || rodzic.style.color === "black") {
+              rodzic.style.color = "#7F8177"
+            } else {
+              rodzic.style.color = "black"
+            }
+
+            if (element.style.backgroundColor === "green" || element.style.backgroundColor === "") {
+              element.style.backgroundColor = "red";
+            } else {
+              element.style.backgroundColor = "green"
+            }
+
+
+        });
+    });
+
   const passwordButton = document.querySelector(".pw--change--box input[name='niccc']")
   const settingsButton = document.querySelector(".right--profile input[name='send_button']")
 
@@ -20,11 +88,11 @@ document.addEventListener("DOMContentLoaded", function() {
   // passwordButton.addEventListener("click", passwordButtonFunction);
   // settingsButton.addEventListener("click", settingsButtonFunction);
 
-  document.querySelectorAll(".table--donations button").forEach(element => {
-    element.addEventListener("click", function () {
-      this.parentElement.parentElement.style.backgroundColor = "#f1f1f1"
-    })
-  })
+  // document.querySelectorAll(".table--donations button").forEach(element => {
+  //   element.addEventListener("click", function () {
+  //     this.parentElement.parentElement.style.backgroundColor = "#f1f1f1"
+  //   })
+  // })
 
 
 

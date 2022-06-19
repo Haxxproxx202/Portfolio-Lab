@@ -12,6 +12,45 @@ from django.http import HttpResponseRedirect
 from django.contrib.messages import constants as messages
 from django.template.defaulttags import register
 from django.contrib.auth.hashers import check_password
+from django.http import HttpResponse
+from django.core.mail import send_mail
+
+def contact(request):
+    if request.method == "POST":
+        message_name = request.POST.get('name')
+        message_email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        send_mail(
+            message_name,
+            message,
+            'pjanecki88@gmail.com',
+            ['immperial@o2.pl'],
+        )
+
+        return render(request, 'index.html')
+    else:
+        return render(request, 'index.html')
+
+
+def create(request):
+    if request.method == 'POST':
+        id_inst = request.POST.get('id')
+        print(id_inst)
+        donation = Donation.objects.get(id=id_inst)
+        if not donation.is_taken:
+            donation.is_taken = True
+            print("Dodano true")
+        else:
+            donation.is_taken = False
+            print("Dodano false")
+        donation.save()
+        success = "DODANO"
+        return HttpResponse(success)
+    else:
+        print("NIE DZIALA")
+        return HttpResponse('CHUJA DZIALA')
+
 
 
 class AddDonation(View):
@@ -150,11 +189,16 @@ class Register(FormView):
 
 class UserProfil(View):
     def get(self, request):
-        user = User.objects.get(id=request.user.id)
-        user_donations = Donation.objects.filter(user=request.user.id)
-        ctx = {"user_donations": user_donations}
-
+        user_donations = Donation.objects.filter(user=request.user.id).filter(is_taken="False")
+        user_donations_archive = Donation.objects.filter(user=request.user.id).filter(is_taken="True")
+        ctx = {"user_donations": user_donations,
+               "user_donations_archive": user_donations_archive}
         return render(request, 'user_profile.html', ctx)
+
+    # def post(self, request):
+    #     if request.method == "POST":
+    #         if "uninst_id" in request.method:
+    #
 
 class UserSettings(View):
     def get(self, request):
