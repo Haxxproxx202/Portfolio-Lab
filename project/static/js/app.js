@@ -85,8 +85,8 @@ document.addEventListener("DOMContentLoaded", function() {
       pw.value = pw_given;
     }
   }
-  // passwordButton.addEventListener("click", passwordButtonFunction);
-  // settingsButton.addEventListener("click", settingsButtonFunction);
+  passwordButton.addEventListener("click", passwordButtonFunction);
+  settingsButton.addEventListener("click", settingsButtonFunction);
 
   // document.querySelectorAll(".table--donations button").forEach(element => {
   //   element.addEventListener("click", function () {
