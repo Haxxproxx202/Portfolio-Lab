@@ -68,25 +68,60 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-  const passwordButton = document.querySelector(".pw--change--box input[name='niccc']")
-  const settingsButton = document.querySelector(".right--profile input[name='send_button']")
+  class Settings {
+    constructor($eee) {
+      this.$eee = $eee;
+      this.$settingsButton = $eee.querySelector(".right--profile input[name='send_button']");
+      this.$passwordButton = $eee.querySelector(".pw--change--box input[name='niccc']");
+      this.init();
+    }
 
-  function passwordButtonFunction(event) {
-    let errorMsg = document.querySelector(".error--password")
-    if (errorMsg.childNodes.length !== 0) {
-      alert("xxx")
+    init() {
+      this.changeSettings();
+      this.changePassword();
+      this.changeArchive();
+    }
+
+    changeArchive(e) {
+
+    }
+
+    changeSettings(e) {
+      function settingsButtonFunction(event) {
+        let pw = document.querySelector(".right--profile input[name='pass']");
+        let pw_given = prompt("Enter your password");
+        if (pw_given) {
+          pw.value = pw_given;
+        }
+      }
+      this.$settingsButton.addEventListener("click", settingsButtonFunction);
+
+    }
+
+    changePassword(e) {
+      function passwordButtonFunction(event) {
+        let errorMsg = document.querySelector(".error--password");
+        if (errorMsg.childNodes.length !== 0) {
+          alert("xxx");
+        }
+      }
+      this.$passwordButton.addEventListener("click", passwordButtonFunction);
+
     }
   }
-
-  function settingsButtonFunction(event) {
-    let pw = document.querySelector(".right--profile input[name='pass']")
-    let pw_given = prompt("Enter your password")
-    if (pw_given) {
-      pw.value = pw_given;
-    }
+  const glowne = document.querySelector(".header--form-page")
+  if (glowne !== null) {
+    new Settings(glowne)
   }
-  passwordButton.addEventListener("click", passwordButtonFunction);
-  settingsButton.addEventListener("click", settingsButtonFunction);
+
+
+
+
+
+
+
+
+
 
   // document.querySelectorAll(".table--donations button").forEach(element => {
   //   element.addEventListener("click", function () {

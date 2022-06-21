@@ -229,16 +229,16 @@ class UserChangePw(FormView):
     def form_valid(self, form):
         old = form.cleaned_data['old_pw']
         new1 = form.cleaned_data['new_pw_1']
-        user = User.objects.get(id=self.request.user.id)
+        logged_user = User.objects.get(id=self.request.user.id)
 
-        if check_password(old, user.password):
-            user.set_password(new1)
-            user.save()
-            update_session_auth_hash(self.request, user)
+        if check_password(old, logged_user.password):
+            logged_user.set_password(new1)
+            logged_user.save()
+            update_session_auth_hash(self.request, logged_user)
 
             return redirect('profile')
         else:
-            return reverse_lazy('change-pw')
+            return redirect(reverse_lazy('change-pw'))
 
 
 
