@@ -69,24 +69,34 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
   class Settings {
-    constructor($eee) {
+    constructor($eee, $sett) {
       this.$eee = $eee;
       this.$settingsButton = $eee.querySelector(".right--profile input[name='send_button']");
       this.$passwordButton = $eee.querySelector(".pw--change--box input[name='niccc']");
+      this.$settBTN = $sett.querySelector(".guzikUstawien");
       this.init();
+
+
     }
 
     init() {
-      this.changeSettings();
-      this.changePassword();
-      this.changeArchive();
+      // this.changeSettings();
+      // this.changePassword();
+      this.events();
     }
 
-    changeArchive(e) {
+    events() {
+      if (window.location.href === "http://127.0.0.1:8000/settings") {
+        this.changeSettings()
+      }
+      if (window.location.href === "http://127.0.0.1:8000/settings/change-password") {
+        this.changePassword()
 
-    }
+      // this.$settBTN.addEventListener("click", changeSettings)
 
-    changeSettings(e) {
+      }}
+
+    changeSettings() {
       function settingsButtonFunction(event) {
         let pw = document.querySelector(".right--profile input[name='pass']");
         let pw_given = prompt("Enter your password");
@@ -94,9 +104,10 @@ document.addEventListener("DOMContentLoaded", function() {
           pw.value = pw_given;
         }
       }
+
       this.$settingsButton.addEventListener("click", settingsButtonFunction);
 
-    }
+    };
 
     changePassword(e) {
       function passwordButtonFunction(event) {
@@ -107,11 +118,12 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       this.$passwordButton.addEventListener("click", passwordButtonFunction);
 
-    }
+    };
   }
-  const glowne = document.querySelector(".header--form-page")
+  const glowne = document.querySelector(".header--form-page");
+  const settingsDropdown = document.querySelector(".dropdown")
   if (glowne !== null) {
-    new Settings(glowne)
+    new Settings(glowne, settingsDropdown);
   }
 
 
@@ -283,6 +295,8 @@ document.addEventListener("DOMContentLoaded", function() {
    * Hide elements when clicked on document
    */
   document.addEventListener("click", function(e) {
+    // console.log("DZIALA")
+    // console.log(window.location.href)
     const target = e.target;
     const tagName = target.tagName;
 
