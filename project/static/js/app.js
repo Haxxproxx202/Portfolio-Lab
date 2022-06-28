@@ -295,8 +295,6 @@ document.addEventListener("DOMContentLoaded", function() {
    * Hide elements when clicked on document
    */
   document.addEventListener("click", function(e) {
-    // console.log("DZIALA")
-    // console.log(window.location.href)
     const target = e.target;
     const tagName = target.tagName;
 

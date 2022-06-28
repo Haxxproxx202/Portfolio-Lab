@@ -127,10 +127,13 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
+ADMINS = [('Przemek', 'immperial@o2.pl'), ]
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'poczta.o2.pl'
-EMAIL_PORT = '465'
+EMAIL_PORT = 465
 EMAIL_HOST_USER = 'immperial@o2.pl'
 EMAIL_HOST_PASSWORD = env('EMAIL_PASS')
 EMAIL_USE_SSL = True

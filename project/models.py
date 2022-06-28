@@ -36,3 +36,6 @@ class Donation(models.Model):
     user = models.ForeignKey(User, null=True, default=None, on_delete=models.CASCADE)
     is_taken = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['pick_up_date', 'pick_up_time']
+
