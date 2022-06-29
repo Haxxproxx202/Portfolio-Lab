@@ -2,8 +2,23 @@
 
 {% block content %}
 
+{% if message_name %}
 <header class="header--main-page">
   {% include 'header_index_form.html' %}
+
+  <div class="slogan container container--90">
+    <div class="slogan--item">
+      <h1>
+        Thanks {{message_name}}!<br />
+        We received your email and will respond shortly.
+      </h1>
+    </div>
+  </div>
+</header>
+{% else %}
+<header class="header--main-page">
+  {% include 'header_index_form.html' %}
+
 
   <div class="slogan container container--90">
     <div class="slogan--item">
@@ -14,6 +29,9 @@
     </div>
   </div>
 </header>
+
+
+
 
 <section id="stats" class="stats">
   <div class="container container--85">
@@ -177,5 +195,7 @@
 
   </div>
 </section>
+{% endif %}
 {% endblock %}
+
 

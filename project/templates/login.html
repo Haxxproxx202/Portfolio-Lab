@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% include 'header_login_register.html' %}
+<header class="header--main-page">
+{% include 'header_index_form.html' %}
 
     <section class="login-page">
-      <h2>Zaloguj się</h2>
+      <h2>Log in</h2>
       <div style="color: red; font-size: 16px; text-align: center"><b>{{error}}</b></div>
       <form action="" method="POST">
         {% csrf_token %}
@@ -15,7 +16,7 @@
           <input type="email" name="email" placeholder="Email" />
         </div>
         <div class="form-group">
-          <input type="password" name="password" placeholder="Hasło" />
+          <input type="password" name="password" placeholder="Password" />
           <a href="#" class="btn btn--small btn--without-border reset-password">Remind password</a>
         </div>
 
@@ -26,3 +27,4 @@
       </form>
     </section>
 {% endblock %}
+</header>

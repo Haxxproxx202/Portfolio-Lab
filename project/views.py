@@ -22,12 +22,19 @@ def contact(request):
         message_name = request.POST.get('name')
         message_email = request.POST.get('email')
         message = request.POST.get('message')
+        message_edited = f"""
+        Email sent by: {message_name}
+        Sender's email address: {message_email}
+        
+        Content:
+        {message}
+        """
 
-        template = render_to_string('email_template.html', {'name': request.user.first_name})
+        # template = render_to_string('email_template.html', {'name': request.user.first_name})
 
         mail_admins(message_name,
-                    message,
-                    fail_silently=False,
+                    message_edited,
+                    fail_silently=False
                     )
 
         # email = EmailMessage(
@@ -39,7 +46,7 @@ def contact(request):
         # email.fail_silently = False
         # email.send()
 
-        return render(request, 'index.html')
+        return render(request, 'index.html', {'message_name': message_name})
     else:
         return render(request, 'index.html')
 

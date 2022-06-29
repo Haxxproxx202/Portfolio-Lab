@@ -470,6 +470,14 @@ h2:after {
   background: transparent;
   cursor: pointer;
 }
+.form-group button {
+  background-color: darkslategray;
+  color: #bcbcbc;
+  border-radius: 3px;
+}
+.form-group a {
+  background-color: #87314e;
+}
 
 /* line 12, scss/modules/_buttons.scss */
 .btn:hover {
@@ -532,13 +540,16 @@ form .form-group {
 /* line 10, scss/modules/_forms.scss */
 form .form-group input:not([type="checkbox"]):not([type="radio"]),
 form .form-group textarea {
+  opacity: 1;
+  overflow: auto;
   border: 1px solid #3c3c3c;
-  background: transparent;
+  background: rgb(255,255,255);
   padding: 4px 14px;
   max-width: 200px;
   width: 100%;
   resize: none;
   font-size: 1.8rem;
+
 }
 
 /* line 21, scss/modules/_forms.scss */
@@ -1613,7 +1624,10 @@ footer .bottom-line--icons a img {
       -ms-flex-align: center;
           align-items: center;
   padding: 0 15px;
-  margin: 50px 0;
+  margin: 50px 30%;
+  background: rgba(128,128,128, 0.9);
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
 /* line 26, scss/style.scss */
