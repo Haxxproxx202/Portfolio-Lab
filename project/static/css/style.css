@@ -472,11 +472,12 @@ h2:after {
 }
 .form-group button {
   background-color: darkslategray;
-  color: #bcbcbc;
-  border-radius: 3px;
+  color: yellow;
+  /*border-radius: 3px;*/
 }
 .form-group a {
-  background-color: #87314e;
+  color: black;
+  font-weight: bold;
 }
 
 /* line 12, scss/modules/_buttons.scss */
