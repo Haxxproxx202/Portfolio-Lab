@@ -7,6 +7,10 @@ INSTITUTION_TYPE = (
     (3, "Local fund-raiser")
 )
 
+class ExtendUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    is_user_verified = models.BooleanField(default=False)
+
 class Category(models.Model):
     name = models.CharField(max_length=30)
 

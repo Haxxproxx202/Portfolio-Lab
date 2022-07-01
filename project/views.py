@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from project.models import Category, Institution, Donation, INSTITUTION_TYPE
+from project.models import Category, Institution, Donation, INSTITUTION_TYPE, ExtendUser
 from django.core.paginator import Paginator
 from django.views.generic import FormView, UpdateView
 from project.forms import RegisterForm, ChangePwForm
@@ -16,6 +16,21 @@ from django.http import HttpResponse
 from django.core.mail import EmailMessage, mail_admins
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
+from .utils import generate_token
+
+def send_activation_email(user, request):
+    current_site = get_current_site(request)
+    email_subject = "Activate your account"
+    email_body = render_to_string('activation.html',{
+        'user': user,
+        'domain':current_site,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': generate_token.make_token(user)
+
+    })
 
 def contact(request):
     if request.method == "POST":
@@ -172,8 +187,19 @@ class Login(View):
             error = "Fill in all fields"
             return render(request, 'login.html', {'error': error})
 
+        # try:
+        #     user = User.objects.get(username=email)
+        # except:
+        #     print("An exception occured")
+        #     return render(request, 'login.html')
+        # else:
+        #     if not user.extenduser.is_user_verified:
+
         logged_user = authenticate(username=email,
                                    password=pw)
+
+        if not logged_user.extenduser.is_user_verified:
+            return render(request, 'login.html', {'msg': "Email is not verified, please check your email inbox."})
 
         if logged_user is not None:
             login(self.request, logged_user)
@@ -200,6 +226,9 @@ class Register(FormView):
         pw = form.cleaned_data['pass2']
 
         new_user = User.objects.create_user(username=email, first_name=name, last_name=surname, email=email, password=pw)
+        extend_user = ExtendUser.objects.create(user=new_user)
+
+        send_activation_email(user, self.request)
 
 
 
