@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
-from django.contrib.messages import constants as messages
+from django.contrib import messages
 from django.template.defaulttags import register
 from django.contrib.auth.hashers import check_password
 from django.http import HttpResponse
@@ -20,17 +20,43 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
 from .utils import generate_token
+from django.conf import settings
+
 
 def send_activation_email(user, request):
     current_site = get_current_site(request)
     email_subject = "Activate your account"
-    email_body = render_to_string('activation.html',{
+    email_body = render_to_string('activation.html', {
         'user': user,
-        'domain':current_site,
+        'domain': current_site,
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': generate_token.make_token(user)
-
     })
+
+    email = EmailMessage(subject=email_subject,
+                         body=email_body,
+                         from_email=settings.EMAIL_FROM_USER,
+                         to=[user.email])
+    email.send()
+
+
+def activate_user(request, uidb64, token):
+
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+
+    except Exception as e:
+        user = None
+    if user and generate_token.check_token(user, token):
+        user.extenduser.is_user_verified = True
+        user.extenduser.save()
+
+        messages.add_message(request, messages.SUCCESS, "Email verified, you can now log in")
+        return redirect(reverse("login"))
+
+    return render(request, 'activation-failed.html', {'user': user})
+
 
 def contact(request):
     if request.method == "POST":
@@ -45,21 +71,10 @@ def contact(request):
         {message}
         """
 
-        # template = render_to_string('email_template.html', {'name': request.user.first_name})
-
         mail_admins(message_name,
                     message_edited,
                     fail_silently=False
                     )
-
-        # email = EmailMessage(
-        #     message_name,
-        #     message,
-        #     message_email,
-        #     ['immperial@o2.pl']
-        # )
-        # email.fail_silently = False
-        # email.send()
 
         return render(request, 'index.html', {'message_name': message_name})
     else:
@@ -83,7 +98,6 @@ def create(request):
     else:
         print("NIE DZIALA")
         return HttpResponse('CHUJA DZIALA')
-
 
 
 class AddDonation(View):
@@ -147,6 +161,7 @@ class FormConfirmation(View):
     def get(self, request):
         return render(request, 'form-confirmation.html')
 
+
 class LandingPage(View):
     def get(self, request):
 
@@ -164,8 +179,6 @@ class LandingPage(View):
         page = request.GET.get('page')
         pagina = pag_fndn.get_page(page)
 
-
-
         ctx = {'sacks_qty': sacks_qty,
                'inst_qty': inst_qty,
                'all_fndn': all_fndn,
@@ -175,9 +188,11 @@ class LandingPage(View):
 
         return render(request, 'index.html', ctx)
 
+
 class Login(View):
     def get(self, request):
         return render(request, 'login.html')
+
     def post(self, request):
         email = request.POST.get('email')
         pw = request.POST.get('password')
@@ -187,25 +202,18 @@ class Login(View):
             error = "Fill in all fields"
             return render(request, 'login.html', {'error': error})
 
-        # try:
-        #     user = User.objects.get(username=email)
-        # except:
-        #     print("An exception occured")
-        #     return render(request, 'login.html')
-        # else:
-        #     if not user.extenduser.is_user_verified:
-
         logged_user = authenticate(username=email,
                                    password=pw)
 
         if not logged_user.extenduser.is_user_verified:
+
             return render(request, 'login.html', {'msg': "Email is not verified, please check your email inbox."})
 
         if logged_user is not None:
             login(self.request, logged_user)
             return redirect('donation')
         else:
-            errot = ''
+            error = ''
             return redirect('register')
 
 
@@ -213,6 +221,7 @@ class Logout(View):
     def get(self, request):
         logout(request)
         return redirect('/')
+
 
 class Register(FormView):
     form_class = RegisterForm
@@ -225,16 +234,19 @@ class Register(FormView):
         email = form.cleaned_data['email']
         pw = form.cleaned_data['pass2']
 
-        new_user = User.objects.create_user(username=email, first_name=name, last_name=surname, email=email, password=pw)
+        new_user = User.objects.create_user(username=email, first_name=name, last_name=surname,
+                                            email=email, password=pw)
         extend_user = ExtendUser.objects.create(user=new_user)
 
-        send_activation_email(user, self.request)
+        send_activation_email(new_user, self.request)
 
-
+        messages.add_message(self.request, messages.SUCCESS,
+                             'We sent you an email to verify your account.')
 
         return super().form_valid(form)
 
-class UserProfil(View):
+
+class UserProfile(View):
     def get(self, request):
         user_donations = Donation.objects.filter(user=request.user.id)\
                                          .filter(is_taken="False")
@@ -244,14 +256,11 @@ class UserProfil(View):
                "user_donations_archive": user_donations_archive}
         return render(request, 'user_profile.html', ctx)
 
-    # def post(self, request):
-    #     if request.method == "POST":
-    #         if "uninst_id" in request.method:
-    #
 
 class UserSettings(View):
     def get(self, request):
         return render(request, 'user_profile_edit.html')
+
     def post(self, request):
         username = request.POST.get('username')
         first_name = request.POST.get('first_name')
@@ -271,6 +280,7 @@ class UserSettings(View):
             error = "Type in a correct password"
             return render(request, 'user_profile_edit.html', {'error': error})
 
+
 class UserChangePw(FormView):
     form_class = ChangePwForm
     template_name = 'change_pw.html'
@@ -288,17 +298,6 @@ class UserChangePw(FormView):
             return redirect('profile')
         else:
             return redirect(reverse_lazy('change-pw'))
-
-
-
-
-
-
-
-
-
-
-
 
 
 #, sprzęt AGD, ciepłe koce

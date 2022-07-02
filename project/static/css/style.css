@@ -1997,6 +1997,13 @@ table, th, td {
   margin-top: 3%;
   font-size: 15px;
 
+}.login--verified {
+  text-align: center;
+  color: green;
+  font-weight: bold;
+  margin-top: 3%;
+  font-size: 15px;
+
 }
 
 

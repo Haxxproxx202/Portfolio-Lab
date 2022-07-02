@@ -132,6 +132,7 @@ ADMINS = (('Przemek', 'immperial@o2.pl'), )
 SERVER_EMAIL = "immperial@o2.pl"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_FROM_USER = env('EMAIL_FROM_USER')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'poczta.o2.pl'
 EMAIL_PORT = 465
