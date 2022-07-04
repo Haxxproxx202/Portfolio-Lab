@@ -229,11 +229,17 @@ class Login(View):
 
             return redirect('donation')
         else:
-            messages.add_message(request, messages.WARNING, "This account does not exist in our database.")
+            messages.add_message(request, messages.WARNING,
+                                 "The email and password you entered did not match our records.")
             return redirect('login')
 
 
-
+class RemindPassword(View):
+    def get(self, request):
+        return render(request, 'remind_password.html')
+    # We're sending you this email because you requested a password reset. Click on this link to create a new password.'
+    def post(self, request):
+        pass
 
 class Logout(View):
     def get(self, request):

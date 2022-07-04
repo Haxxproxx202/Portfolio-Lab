@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from project import views
 from project.views import AddDonation, FormConfirmation, LandingPage, Login, Register, Logout, UserProfile, \
-                          UserSettings, UserChangePw
+                          UserSettings, UserChangePw, RemindPassword
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin:index'),
@@ -33,4 +33,5 @@ urlpatterns = [
     path('create/', views.create, name='create'),
     path('contact/', views.contact, name='email'),
     path('activate-user/<uidb64>/<token>', views.activate_user, name="activate"),
+    path('remind_password/', RemindPassword.as_view(), name="remind_pw"),
 ]

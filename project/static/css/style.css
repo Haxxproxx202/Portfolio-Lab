@@ -1652,6 +1652,12 @@ footer .bottom-line--icons a img {
   font-size: 1.4rem;
 }
 
+.form-group, .reset-pw {
+  font-size: 17px;
+  font-weight: bold;
+  color: black;
+}
+
 /* line 37, scss/style.scss */
 .login-page form .form-group {
   margin-bottom: 40px;
