@@ -3,13 +3,14 @@
 {% block content %}
 <header class="header--main-page">
 {% include 'header_index_form.html' %}
-
-
-    <section class="login-page">
+  {% if form.non_field_errors %}
+  <div class="message--error">{{form.non_field_errors}}</div>
+  {% endif %}
+    <section class="login-page registration">
       <h2>Registration</h2>
       <form action="" method="POST">
         {% csrf_token %}
-        {{form.non_field_errors}}
+
         <div class="form-group">
           {{form.username}} {{form.username.errors}}
         </div>

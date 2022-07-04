@@ -550,7 +550,14 @@ form .form-group textarea {
   width: 100%;
   resize: none;
   font-size: 1.8rem;
+}
 
+form .form-group input:not([type="checkbox"]):not([type="radio"]):focus {
+  background-color: #f8efc0;
+}
+
+.login-page .registration {
+  width: border-box;
 }
 
 /* line 21, scss/modules/_forms.scss */
@@ -1625,7 +1632,7 @@ footer .bottom-line--icons a img {
       -ms-flex-align: center;
           align-items: center;
   padding: 0 15px;
-  margin: 50px 30%;
+  margin: 20px 30%;
   background: rgba(128,128,128, 0.9);
   border: 1px solid black;
   border-radius: 5px;
@@ -1990,14 +1997,22 @@ table, th, td {
   font-size: 12px;
 }
 
-.login--unverified {
+.message--error {
   text-align: center;
-  color: red;
   font-weight: bold;
-  margin-top: 3%;
+  /*margin-top: 3%;*/
   font-size: 15px;
+  border: 1px solid black;
+  background-repeat: no-repeat;
+  padding: 15px 10px 15px 50px;
+  margin: 10px 0;
+  color: #D8000C;
+  background-color: #FFBABA;
+  background-image: url("https://i.imgur.com/GnyDvKN.png");
 
-}.login--verified {
+
+
+}.login--success {
   text-align: center;
   color: green;
   font-weight: bold;

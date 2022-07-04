@@ -4,7 +4,7 @@
 <header class="header--main-page">
 {% include 'header_index_form.html' %}
   {% if msg %}
-  <div class="login--unverified">{{msg}}</div>
+  <div class="message--error">{{msg}}</div>
   {% endif %}
   {% if messages %}
   {% for message in messages %}
@@ -15,10 +15,6 @@
     <h2>Log in</h2>
     <div style="color: red; font-size: 16px; text-align: center"><b>{{error}}</b></div>
     <form action="" method="POST">
-      {% csrf_token %}
-      {% if error %}
-      {% endif %}
-
       <div class="form-group">
         <input type="email" name="email" placeholder="Email" />
       </div>

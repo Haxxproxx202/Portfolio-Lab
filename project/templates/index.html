@@ -19,7 +19,11 @@
 <header class="header--main-page">
   {% include 'header_index_form.html' %}
 
-
+{% if messages %}
+  {% for message in messages %}
+  <div class="message--{{message.tags}}">{{message}}</div>
+  {% endfor %}
+  {% endif %}
   <div class="slogan container container--90">
     <div class="slogan--item">
       <h1>

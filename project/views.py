@@ -7,7 +7,7 @@ from project.forms import RegisterForm, ChangePwForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.template.defaulttags import register
@@ -21,6 +21,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
 from .utils import generate_token
 from django.conf import settings
+from django.core.validators import validate_email
 
 
 def send_activation_email(user, request):
@@ -46,7 +47,7 @@ def activate_user(request, uidb64, token):
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
 
-    except Exception as e:
+    except Exception:
         user = None
     if user and generate_token.check_token(user, token):
         user.extenduser.is_user_verified = True
@@ -63,22 +64,35 @@ def contact(request):
         message_name = request.POST.get('name')
         message_email = request.POST.get('email')
         message = request.POST.get('message')
-        message_edited = f"""
-        Email sent by: {message_name}
-        Sender's email address: {message_email}
-        
-        Content:
-        {message}
-        """
 
-        mail_admins(message_name,
-                    message_edited,
-                    fail_silently=False
-                    )
+        if message_name and message_email and message:
+            try:
+                validate_email(message_email)
+            except ValidationError:
+                messages.add_message(request, messages.ERROR, "Email address is incorrect.")
+                return render(request, 'index.html')
+            else:
+                message_edited = f"""
+                Email sent by: {message_name}
+                Sender's email address: {message_email}
+                
+                Content:
+                {message}
+                """
 
-        return render(request, 'index.html', {'message_name': message_name})
+                mail_admins(message_name,
+                            message_edited,
+                            fail_silently=False
+                            )
+
+                return render(request, 'index.html', {'message_name': message_name})
+
+        else:
+            messages.add_message(request, messages.ERROR, "Fill in all fields.")
+            return redirect('/')
+
     else:
-        return render(request, 'index.html')
+        return redirect('/')
 
 
 def create(request):
