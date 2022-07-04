@@ -213,22 +213,26 @@ class Login(View):
 
         if not email or not pw:
 
-            error = "Fill in all fields"
-            return render(request, 'login.html', {'error': error})
+            messages.add_message(request, messages.ERROR, "Fill in all fields, please.")
+            return redirect('login')
 
         logged_user = authenticate(username=email,
                                    password=pw)
-
-        if not logged_user.extenduser.is_user_verified:
-
-            return render(request, 'login.html', {'msg': "Email is not verified, please check your email inbox."})
-
         if logged_user is not None:
-            login(self.request, logged_user)
+            if not logged_user.extenduser.is_user_verified:
+                messages.add_message(request, messages.WARNING,
+                                     "The account is not verified. Check your email inbox, please.")
+
+                return redirect('login')
+            else:
+                login(self.request, logged_user)
+
             return redirect('donation')
         else:
-            error = ''
-            return redirect('register')
+            messages.add_message(request, messages.WARNING, "This account does not exist in our database.")
+            return redirect('login')
+
+
 
 
 class Logout(View):
