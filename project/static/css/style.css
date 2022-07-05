@@ -1652,10 +1652,11 @@ footer .bottom-line--icons a img {
   font-size: 1.4rem;
 }
 
-.form-group, .reset-pw {
+.reset-pw {
   font-size: 17px;
   font-weight: bold;
   color: black;
+  text-align: center;
 }
 
 /* line 37, scss/style.scss */

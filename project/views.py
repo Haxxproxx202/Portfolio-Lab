@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from project.models import Category, Institution, Donation, INSTITUTION_TYPE, ExtendUser
 from django.core.paginator import Paginator
-from django.views.generic import FormView, UpdateView
+from django.views.generic import FormView, UpdateView, TemplateView
 from project.forms import RegisterForm, ChangePwForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
@@ -20,6 +20,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
 from .utils import generate_token
+from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from django.core.validators import validate_email
 
@@ -234,12 +235,78 @@ class Login(View):
             return redirect('login')
 
 
+def send_reset_pw_email(user, email, request):
+    email_subject = "Password reset"
+    email_body = render_to_string('remind_password_email.html',
+                                  {'user_name': user.first_name,
+                                   'domain': get_current_site(request),
+                                   'uid': urlsafe_base64_encode(force_bytes(user.id)),
+                                   'token': default_token_generator.make_token(user),
+                                   'protocol': 'http'})
+
+    verification_email = EmailMessage(subject=email_subject,
+                                      body=email_body,
+                                      from_email=settings.EMAIL_FROM_USER,
+                                      to=[email])
+    verification_email.send()
+
+
 class RemindPassword(View):
     def get(self, request):
         return render(request, 'remind_password.html')
     # We're sending you this email because you requested a password reset. Click on this link to create a new password.'
     def post(self, request):
-        pass
+        email = request.POST.get("email")
+        if email:
+            try:
+                validate_email(email)
+            except ValidationError:
+                messages.add_message(request, messages.ERROR,
+                                     "Enter your email address in format 'username@example.com'")
+                return redirect('remind_pw')
+            else:
+                try:
+                    user = User.objects.get(username=email)
+                except ObjectDoesNotExist:
+                    messages.add_message(request, messages.ERROR,
+                                         "We couldn't find an account with that email address")
+                    return redirect('remind_pw')
+                else:
+                    send_reset_pw_email(user, email, request)
+                    messages.add_message(request, messages.SUCCESS, "Success! Check your email inbox to continue.")
+                    return redirect('login')
+        else:
+            messages.add_message(request, messages.ERROR, "Enter an email address, please.")
+            return redirect('remind_pw')
+
+
+def password_reset_confirm(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        print(uid)
+        user = User.objects.get(id=uid)
+    except Exception:
+        user = None
+    if user and default_token_generator.check_token(user, token):
+        messages.add_message(request, messages.SUCCESS, 'Success! Enter a new password, please.')
+        ctx = {'user': user}
+        return render(request, 'remind_password_confirm.html', ctx)
+    return render(request, 'activation-failed.html')
+
+class SetNewPass(TemplateView):
+    template_name = 'remind_password_confirm.html'
+    def get_context_data(self, **kwargs):
+        context = super(password_reset_confirm()).get_context_data()
+    # def get(self, request):
+    #     def
+    #     return render(request, 'remind_password_confirm.html')
+    # def post(self, request):
+    #     pw1 = request.POST.get('pw1')
+    #     pw2 = request.POST.get('pw2')
+    #     if pw1 == pw2:
+
+
+
 
 class Logout(View):
     def get(self, request):
