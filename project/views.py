@@ -28,7 +28,7 @@ from django.core.validators import validate_email
 def send_activation_email(user, request):
     current_site = get_current_site(request)
     email_subject = "Activate your account"
-    email_body = render_to_string('activation.html', {
+    email_body = render_to_string('emails/account_activation_email.html', {
         'user': user,
         'domain': current_site,
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -223,21 +223,27 @@ class Login(View):
             if not logged_user.extenduser.is_user_verified:
                 messages.add_message(request, messages.WARNING,
                                      "The account is not verified. Check your email inbox, please.")
-
                 return redirect('login')
             else:
                 login(self.request, logged_user)
 
             return redirect('donation')
         else:
-            messages.add_message(request, messages.WARNING,
-                                 "The email and password you entered did not match our records.")
-            return redirect('login')
+            try:
+                User.objects.get(username=email)
+            except ObjectDoesNotExist:
+                messages.add_message(request, messages.ERROR,
+                                     "The email and password you entered did not match our records.")
+                return redirect('login')
+            else:
+                messages.add_message(request, messages.ERROR,
+                                     "Incorrect password. Enter a valid password to log in, please.")
+                return redirect('login')
 
 
 def send_reset_pw_email(user, email, request):
     email_subject = "Password reset"
-    email_body = render_to_string('remind_password_email.html',
+    email_body = render_to_string('emails/remind_password_email.html',
                                   {'user_name': user.first_name,
                                    'domain': get_current_site(request),
                                    'uid': urlsafe_base64_encode(force_bytes(user.id)),
@@ -254,7 +260,6 @@ def send_reset_pw_email(user, email, request):
 class RemindPassword(View):
     def get(self, request):
         return render(request, 'remind_password.html')
-    # We're sending you this email because you requested a password reset. Click on this link to create a new password.'
     def post(self, request):
         email = request.POST.get("email")
         if email:
@@ -283,27 +288,38 @@ class RemindPassword(View):
 def password_reset_confirm(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        print(uid)
+        print("To jest uid64: " + uidb64 + "\nTo jest token: " + token)
         user = User.objects.get(id=uid)
     except Exception:
         user = None
     if user and default_token_generator.check_token(user, token):
         messages.add_message(request, messages.SUCCESS, 'Success! Enter a new password, please.')
-        ctx = {'user': user}
-        return render(request, 'remind_password_confirm.html', ctx)
+        return redirect('/new_password/' + str(user.id))
     return render(request, 'activation-failed.html')
 
-class SetNewPass(TemplateView):
-    template_name = 'remind_password_confirm.html'
-    def get_context_data(self, **kwargs):
-        context = super(password_reset_confirm()).get_context_data()
-    # def get(self, request):
-    #     def
-    #     return render(request, 'remind_password_confirm.html')
-    # def post(self, request):
-    #     pw1 = request.POST.get('pw1')
-    #     pw2 = request.POST.get('pw2')
-    #     if pw1 == pw2:
+class SetNewPass(View):
+    def get(self, request, id_):
+        return render(request, 'remind_password_reset.html')
+    def post(self, request, id_):
+        user = User.objects.get(id=id_)
+        pw1 = request.POST.get('pw1')
+        pw2 = request.POST.get('pw2')
+        if pw1 == pw2:
+            if len(pw1) > 5:
+                user.set_password(pw1)
+                user.save()
+                messages.add_message(request, messages.SUCCESS, 'The password has been changed.')
+                return redirect('login')
+            else:
+                messages.add_message(request, messages.WARNING,
+                                     'The password is too short. Use minimum 6 characters, please.')
+                return redirect('/new_password/' + str(user.id))
+        else:
+            messages.add_message(request, messages.WARNING,
+                                 'The passwords you typed in do not match. Try again, please.')
+            return redirect('/new_password/' + str(user.id))
+
+
 
 
 

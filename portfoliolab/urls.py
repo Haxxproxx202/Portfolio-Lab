@@ -35,5 +35,5 @@ urlpatterns = [
     path('activate-user/<uidb64>/<token>', views.activate_user, name="activate"),
     path('remind_password/', RemindPassword.as_view(), name="remind_pw"),
     path('remind_password_confirm/<uidb64>/<token>/', views.password_reset_confirm, name="pw_confirm"),
-    path('new_password/', SetNewPass.as_view(), name="new_pw")
+    path('new_password/<str:id_>/', SetNewPass.as_view(), name="new_pw")
 ]
