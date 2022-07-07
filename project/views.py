@@ -294,11 +294,14 @@ def password_reset_confirm(request, uidb64, token):
         user = None
     if user and default_token_generator.check_token(user, token):
         messages.add_message(request, messages.SUCCESS, 'Success! Enter a new password, please.')
-        return redirect('/new_password/' + str(user.id))
+
+        return redirect(f'/new_password/{user.id}', {'user_id': user.id})
     return render(request, 'activation-failed.html')
 
 class SetNewPass(View):
     def get(self, request, id_):
+        user_id = request.GET.get('hidden_value')
+        print("KURWA DZIAŁA - to id z hidden " + str(user_id))
         return render(request, 'remind_password_reset.html')
     def post(self, request, id_):
         user = User.objects.get(id=id_)
@@ -313,11 +316,11 @@ class SetNewPass(View):
             else:
                 messages.add_message(request, messages.WARNING,
                                      'The password is too short. Use minimum 6 characters, please.')
-                return redirect('/new_password/' + str(user.id))
+                return redirect(f'/new_password/{user.id}')
         else:
             messages.add_message(request, messages.WARNING,
                                  'The passwords you typed in do not match. Try again, please.')
-            return redirect('/new_password/' + str(user.id))
+            return redirect(f'/new_password/{user.id}')
 
 
 
