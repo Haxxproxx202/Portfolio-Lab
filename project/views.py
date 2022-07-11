@@ -288,31 +288,50 @@ class RemindPassword(View):
 def password_reset_confirm(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        print("To jest uid64: " + uidb64 + "\nTo jest token: " + token)
         user = User.objects.get(id=uid)
-    except Exception:
+    except ObjectDoesNotExist:
         user = None
     if user and default_token_generator.check_token(user, token):
         messages.add_message(request, messages.SUCCESS, 'Success! Enter a new password, please.')
+        response = redirect('/new_password/')
+        response.set_cookie(key="user_id", value=f"{user.id}")
+        return response
 
-        return redirect(f'/new_password/{user.id}', {'user_id': user.id})
+        # return redirect(f'/new_password/{user.id}', {'user_id': user.id})
     return render(request, 'activation-failed.html')
 
+
 class SetNewPass(View):
-    def get(self, request, id_):
-        user_id = request.GET.get('hidden_value')
-        print("KURWA DZIAŁA - to id z hidden " + str(user_id))
-        return render(request, 'remind_password_reset.html')
-    def post(self, request, id_):
-        user = User.objects.get(id=id_)
+    def __init__(self):
+        self.cookie = ""
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            print(request.user)
+            return redirect('landing_page')
+        else:
+            response = render(request, 'remind_password_reset.html')
+            if request.COOKIES.get('user_id'):
+                self.cookie = request.COOKIES.get('user_id')
+                print("To cookie:", self.cookie)
+                response.delete_cookie('user_id')
+                return response
+            else:
+                return redirect('landing_page')
+
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(id=self.cookie)
         pw1 = request.POST.get('pw1')
         pw2 = request.POST.get('pw2')
+        # print("TO jest moje ciastko z POST: ", self.ciastko)
+
         if pw1 == pw2:
             if len(pw1) > 5:
                 user.set_password(pw1)
                 user.save()
                 messages.add_message(request, messages.SUCCESS, 'The password has been changed.')
-                return redirect('login')
+                cookies = redirect('login')
+                return cookies
             else:
                 messages.add_message(request, messages.WARNING,
                                      'The password is too short. Use minimum 6 characters, please.')
@@ -321,10 +340,6 @@ class SetNewPass(View):
             messages.add_message(request, messages.WARNING,
                                  'The passwords you typed in do not match. Try again, please.')
             return redirect(f'/new_password/{user.id}')
-
-
-
-
 
 
 class Logout(View):
@@ -387,7 +402,7 @@ class UserSettings(View):
             return redirect('profile')
 
         else:
-            error = "Type in a correct password"
+            error = "Enter a correct password, please."
             return render(request, 'user_profile_edit.html', {'error': error})
 
 
