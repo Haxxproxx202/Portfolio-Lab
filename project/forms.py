@@ -18,12 +18,27 @@ class RegisterForm(forms.Form):
 
 class ChangePwForm(forms.Form):
     old_pw = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Old password'}))
-    new_pw_1 = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
-    new_pw_2 = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
+    new_pw_1 = forms.CharField(min_length=6, max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
+    new_pw_2 = forms.CharField(min_length=6, max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
 
     def clean(self):
         if self.data['new_pw_1'] != self.data['new_pw_2']:
             raise ValidationError('You typed two different passwords. Try again, please')
         else:
+
             return super().clean()
+
+
+class ResetPwForm(forms.Form):
+    new_pw_1 = forms.CharField(min_length=6, max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
+    new_pw_2 = forms.CharField(min_length=6, max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
+
+    def clean(self):
+        if self.data['new_pw_1'] != self.data['new_pw_2']:
+            raise ValidationError('You typed two different passwords. Try again, please')
+        else:
+
+            return super().clean()
+
+
 

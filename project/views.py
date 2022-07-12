@@ -3,7 +3,7 @@ from django.views import View
 from project.models import Category, Institution, Donation, INSTITUTION_TYPE, ExtendUser
 from django.core.paginator import Paginator
 from django.views.generic import FormView, UpdateView, TemplateView
-from project.forms import RegisterForm, ChangePwForm
+from project.forms import RegisterForm, ChangePwForm, ResetPwForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
@@ -274,7 +274,7 @@ class RemindPassword(View):
                     user = User.objects.get(username=email)
                 except ObjectDoesNotExist:
                     messages.add_message(request, messages.ERROR,
-                                         "We couldn't find an account with that email address")
+                                         "We couldn't find an account with that email address.")
                     return redirect('remind_pw')
                 else:
                     send_reset_pw_email(user, email, request)
@@ -292,7 +292,7 @@ def password_reset_confirm(request, uidb64, token):
     except ObjectDoesNotExist:
         user = None
     if user and default_token_generator.check_token(user, token):
-        messages.add_message(request, messages.SUCCESS, 'Success! Enter a new password, please.')
+        messages.add_message(request, messages.SUCCESS, f'Success {user.first_name}! Enter a new password, please.')
         response = redirect('/new_password/')
         response.set_cookie(key="user_id", value=f"{user.id}")
         return response
@@ -306,40 +306,58 @@ class SetNewPass(View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            print(request.user)
             return redirect('landing_page')
         else:
-            response = render(request, 'remind_password_reset.html')
+            form = ResetPwForm()
+            response = render(request, 'remind_password_reset.html', {'form': form})
             if request.COOKIES.get('user_id'):
                 SetNewPass.user_id = request.COOKIES.get('user_id')
-                print("To cookie:", SetNewPass.user_id)
                 response.delete_cookie('user_id')
                 return response
             else:
                 return redirect('landing_page')
 
     def post(self, request):
-        print("to cookie z POST: ", SetNewPass.user_id)
-        user = User.objects.get(id=SetNewPass.user_id)
-        SetNewPass.user_id = ""
-        pw1 = request.POST.get('pw1')
-        pw2 = request.POST.get('pw2')
+        form = ResetPwForm(request.POST)
+        if form.is_valid():
 
-        if pw1 == pw2:
-            if len(pw1) > 5:
-                user.set_password(pw1)
-                user.save()
-                messages.add_message(request, messages.SUCCESS, 'The password has been changed.')
-                cookies = redirect('login')
-                return cookies
-            else:
-                messages.add_message(request, messages.WARNING,
-                                     'The password is too short. Use minimum 6 characters, please.')
-                return redirect(f'/new_password/')
+            user = User.objects.get(id=SetNewPass.user_id)
+            SetNewPass.user_id = ""
+            pw1 = form.cleaned_data['new_pw_1']
+            user.set_password(pw1)
+            user.save()
+            messages.add_message(request, messages.SUCCESS, 'The password has been changed.')
+            return redirect('login')
         else:
+            response = redirect('new_pw')
+            response.set_cookie(key='user_id', value=SetNewPass.user_id)
             messages.add_message(request, messages.WARNING,
                                  'The passwords you typed in do not match. Try again, please.')
-            return redirect(f'/new_password/')
+            return response
+
+    # def post(self, request):
+    #     form = ChangePwForm(request.POST)
+    #     print("to cookie z POST: ", SetNewPass.user_id)
+    #     user = User.objects.get(id=SetNewPass.user_id)
+    #     SetNewPass.user_id = ""
+    #     pw1 = request.POST.get('pw1')
+    #     pw2 = request.POST.get('pw2')
+    #
+    #     if pw1 == pw2:
+    #         if len(pw1) > 5:
+    #             user.set_password(pw1)
+    #             user.save()
+    #             messages.add_message(request, messages.SUCCESS, 'The password has been changed.')
+    #             cookies = redirect('login')
+    #             return cookies
+    #         else:
+    #             messages.add_message(request, messages.WARNING,
+    #                                  'The password is too short. Use minimum 6 characters, please.')
+    #             return redirect(f'/new_password/')
+    #     else:
+    #         messages.add_message(request, messages.WARNING,
+    #                              'The passwords you typed in do not match. Try again, please.')
+    #         return redirect(f'/new_password/')
 
 
 class Logout(View):
