@@ -302,28 +302,28 @@ def password_reset_confirm(request, uidb64, token):
 
 
 class SetNewPass(View):
-    def __init__(self):
-        self.cookie = ""
+    user_id = ""
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         if request.user.is_authenticated:
             print(request.user)
             return redirect('landing_page')
         else:
             response = render(request, 'remind_password_reset.html')
             if request.COOKIES.get('user_id'):
-                self.cookie = request.COOKIES.get('user_id')
-                print("To cookie:", self.cookie)
+                SetNewPass.user_id = request.COOKIES.get('user_id')
+                print("To cookie:", SetNewPass.user_id)
                 response.delete_cookie('user_id')
                 return response
             else:
                 return redirect('landing_page')
 
-    def post(self, request, *args, **kwargs):
-        user = User.objects.get(id=self.cookie)
+    def post(self, request):
+        print("to cookie z POST: ", SetNewPass.user_id)
+        user = User.objects.get(id=SetNewPass.user_id)
+        SetNewPass.user_id = ""
         pw1 = request.POST.get('pw1')
         pw2 = request.POST.get('pw2')
-        # print("TO jest moje ciastko z POST: ", self.ciastko)
 
         if pw1 == pw2:
             if len(pw1) > 5:
@@ -335,11 +335,11 @@ class SetNewPass(View):
             else:
                 messages.add_message(request, messages.WARNING,
                                      'The password is too short. Use minimum 6 characters, please.')
-                return redirect(f'/new_password/{user.id}')
+                return redirect(f'/new_password/')
         else:
             messages.add_message(request, messages.WARNING,
                                  'The passwords you typed in do not match. Try again, please.')
-            return redirect(f'/new_password/{user.id}')
+            return redirect(f'/new_password/')
 
 
 class Logout(View):
