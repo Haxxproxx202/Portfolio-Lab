@@ -296,8 +296,6 @@ def password_reset_confirm(request, uidb64, token):
         response = redirect('/new_password/')
         response.set_cookie(key="user_id", value=f"{user.id}")
         return response
-
-        # return redirect(f'/new_password/{user.id}', {'user_id': user.id})
     return render(request, 'activation-failed.html')
 
 
@@ -334,30 +332,6 @@ class SetNewPass(View):
             messages.add_message(request, messages.WARNING,
                                  'The passwords you typed in do not match. Try again, please.')
             return response
-
-    # def post(self, request):
-    #     form = ChangePwForm(request.POST)
-    #     print("to cookie z POST: ", SetNewPass.user_id)
-    #     user = User.objects.get(id=SetNewPass.user_id)
-    #     SetNewPass.user_id = ""
-    #     pw1 = request.POST.get('pw1')
-    #     pw2 = request.POST.get('pw2')
-    #
-    #     if pw1 == pw2:
-    #         if len(pw1) > 5:
-    #             user.set_password(pw1)
-    #             user.save()
-    #             messages.add_message(request, messages.SUCCESS, 'The password has been changed.')
-    #             cookies = redirect('login')
-    #             return cookies
-    #         else:
-    #             messages.add_message(request, messages.WARNING,
-    #                                  'The password is too short. Use minimum 6 characters, please.')
-    #             return redirect(f'/new_password/')
-    #     else:
-    #         messages.add_message(request, messages.WARNING,
-    #                              'The passwords you typed in do not match. Try again, please.')
-    #         return redirect(f'/new_password/')
 
 
 class Logout(View):
@@ -420,8 +394,8 @@ class UserSettings(View):
             return redirect('profile')
 
         else:
-            error = "Enter a correct password, please."
-            return render(request, 'user_profile_edit.html', {'error': error})
+            messages.add_message(request, messages.ERROR, "Incorrect password. Enter a valid password, please.")
+            return render(request, 'user_profile_edit.html')
 
 
 class UserChangePw(FormView):
@@ -440,6 +414,7 @@ class UserChangePw(FormView):
 
             return redirect('profile')
         else:
+            messages.add_message(self.request, messages.ERROR, 'Incorrect password. Enter a valid password, please.')
             return redirect(reverse_lazy('change-pw'))
 
 
