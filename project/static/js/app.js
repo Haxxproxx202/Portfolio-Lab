@@ -444,13 +444,14 @@ document.addEventListener("DOMContentLoaded", function() {
           })
           document.querySelector(".checked_org").value = institution
           let numberOfBags = document.querySelector("div [data-step='2'] input").value
+          let categoriesNamesSpace = categoriesNames.join(', ');
           if (numberOfBags <= 1) {
-            numberOfBags = numberOfBags + " bag with: "
+            numberOfBags = numberOfBags + " bag with: " + categoriesNames
           } else {
-            numberOfBags = numberOfBags + " bags with: "
+            numberOfBags = numberOfBags + " bags with: " + categoriesNamesSpace
           }
 
-          let recipient = "For " + institution
+          let recipient = "For: " + institution
 
           console.log(numberOfBags)
           let summary = document.querySelector(".summary");

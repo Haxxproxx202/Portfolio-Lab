@@ -6,7 +6,9 @@
 
     {% include 'header_index_form.html' %}
     {% if form.non_field_errors %}
-    <div class="message--error">You entered two different passwords. Try again, please.</div>
+    <div class="message--error">
+        You entered two different passwords. Try again, please.
+    </div>
 <!--    <div class="message&#45;&#45;error">{{ form.non_field_errors }}</div>-->
     {% endif %}
     {% if messages %}

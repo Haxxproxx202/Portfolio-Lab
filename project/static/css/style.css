@@ -2006,7 +2006,10 @@ table, th, td {
 
 
 
-.message--error, .message--success, .message--warning {
+.message--error,
+.message--success,
+.message--warning,
+.message--info {
   text-align: center;
   font-weight: bold;
   font-size: 15px;
@@ -2018,20 +2021,24 @@ table, th, td {
 
 .message--error {
   background-color: #FFBABA;
-  background-image: url("https://i.imgur.com/GnyDvKN.png");
+  /*background-image: url(../images/error.png);*/
   color: #D8000C;
 }
 
 .message--success {
   background-color: #DFF2BF;
-  background-image: url('https://i.imgur.com/Q9BGTuy.png');
+  /*background-image: url('https://i.imgur.com/Q9BGTuy.png');*/
   color: #4F8A10;
 }
 
 .message--warning {
   color: #9F6000;
   background-color: #FEEFB3;
-  background-image: url('https://i.imgur.com/Z8q7ww7.png');
+  /*background-image: url('https://i.imgur.com/Z8q7ww7.png');*/
+
+}.message--info {
+  color: #204a8e;
+  background-color: #c9ddff;
 }
 
 

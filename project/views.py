@@ -26,6 +26,7 @@ from django.core.validators import validate_email
 
 
 def send_activation_email(user, request):
+    """ Sends an activation email """
     current_site = get_current_site(request)
     email_subject = "Activate your account"
     email_body = render_to_string('emails/account_activation_email.html', {
@@ -43,24 +44,26 @@ def send_activation_email(user, request):
 
 
 def activate_user(request, uidb64, token):
+    """ Checks if a user clicked on a link sent to him """
 
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
 
-    except Exception:
+    except ObjectDoesNotExist:
         user = None
     if user and generate_token.check_token(user, token):
         user.extenduser.is_user_verified = True
         user.extenduser.save()
 
-        messages.add_message(request, messages.SUCCESS, "Email verified, you can now log in")
+        messages.add_message(request, messages.SUCCESS, "Email verified, you can log in now.")
         return redirect(reverse("login"))
 
     return render(request, 'activation-failed.html', {'user': user})
 
 
 def contact(request):
+    """ Sends a contact email from a user to admin """
     if request.method == "POST":
         message_name = request.POST.get('name')
         message_email = request.POST.get('email')
@@ -89,33 +92,31 @@ def contact(request):
                 return render(request, 'index.html', {'message_name': message_name})
 
         else:
-            messages.add_message(request, messages.ERROR, "Fill in all fields.")
+            messages.add_message(request, messages.WARNING, "Fill in all fields, please.")
             return redirect('/')
 
     else:
         return redirect('/')
 
 
-def create(request):
-    if request.method == 'POST':
-        id_inst = request.POST.get('id')
-        print(id_inst)
-        donation = Donation.objects.get(id=id_inst)
-        if not donation.is_taken:
-            donation.is_taken = True
-            print("Dodano true")
-        else:
-            donation.is_taken = False
-            print("Dodano false")
-        donation.save()
-        success = "DODANO"
-        return HttpResponse(success)
-    else:
-        print("NIE DZIALA")
-        return HttpResponse('CHUJA DZIALA')
+# def create(request):
+#     if request.method == 'POST':
+#         institution_id = request.POST.get('id')
+#         donation = Donation.objects.get(id=institution_id)
+#         if not donation.is_taken:
+#             donation.is_taken = True
+#         else:
+#             donation.is_taken = False
+#         donation.save()
+#         success = "DODANO"
+#         return HttpResponse(success)
+#     else:
+#         print("NIE DZIALA")
+#         return HttpResponse('CHUJA DZIALA')
 
 
 class AddDonation(View):
+    """ Adds a donation made by a user into a database """
     def get(self, request):
         if request.user.is_authenticated:
             categories = Category.objects.all()
@@ -125,6 +126,7 @@ class AddDonation(View):
                    'institutions': institutions}
             return render(request, 'form.html', ctx)
         else:
+            messages.add_message(request, messages.INFO, "To make a donation you have to log in first.")
             return redirect('login')
 
     def post(self, request):
