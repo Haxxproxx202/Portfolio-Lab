@@ -4,7 +4,11 @@
 
 <header class="header--form-page">
   {% include 'header_index_form.html' %}
-
+  {% if messages %}
+  {% for message in messages %}
+  <div class="message--{{ message.tags }} {% if xxx %}{{ xxx }}{% endif %}" style="width: 100%">{{ message }}</div>
+  {% endfor %}
+  {% endif %}
   <div class="slogan container container--90">
     <div class="slogan--item">
       <h1>
@@ -53,11 +57,7 @@
   </div>
 
   <div class="form--steps-container">
-    <div class="form--steps-counter">Step <span>1</span>{% if error %}<p style="text-align: center; color: red"><b>{{error}}</b></p>{% endif %}</div>
-
-
-
-
+    <div class="form--steps-counter">Step <span>1</span></div>
     <form action="" method="POST">
 
       <!-- STEP 1: class .active is switching steps -->
