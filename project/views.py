@@ -8,17 +8,13 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from django.http import HttpResponseRedirect
 from django.contrib import messages
-from django.template.defaulttags import register
 from django.contrib.auth.hashers import check_password
-from django.http import HttpResponse
 from django.core.mail import EmailMessage, mail_admins
-from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
+from django.utils.encoding import force_bytes, force_str
 from .utils import generate_token
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
@@ -26,7 +22,7 @@ from django.core.validators import validate_email
 
 
 def send_activation_email(user, request):
-    """ Sends an activation email """
+    """ Sends an activation email. """
     current_site = get_current_site(request)
     email_subject = "Activate your account"
     email_body = render_to_string('emails/account_activation_email.html', {
@@ -44,7 +40,7 @@ def send_activation_email(user, request):
 
 
 def activate_user(request, uidb64, token):
-    """ The function is called when a user clicks on an account activation link sent to him via email """
+    """ The function is called when a user clicks on an account activation link sent to him via email. """
 
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -63,7 +59,7 @@ def activate_user(request, uidb64, token):
 
 
 def contact(request):
-    """ Sends a contact email from a user to admin """
+    """ Sends a contact email from a user to admin. """
     if request.method == "POST":
         message_name = request.POST.get('name')
         message_email = request.POST.get('email')
@@ -116,7 +112,7 @@ def contact(request):
 
 
 class AddDonation(View):
-    """ Adds a donation made by a user into a database """
+    """ Adds a donation made by a user into a database. """
     def get(self, request):
         if request.user.is_authenticated:
             categories = Category.objects.all()
@@ -194,13 +190,13 @@ class AddDonation(View):
 
 
 class FormConfirmation(View):
-    """ Shows a confirmation template """
+    """ Shows a confirmation template. """
     def get(self, request):
         return render(request, 'form-confirmation.html')
 
 
 class LandingPage(View):
-    """ Shows the main page """
+    """ Shows the main page. """
     def get(self, request):
 
         donations = Donation.objects.all()
@@ -228,7 +224,7 @@ class LandingPage(View):
 
 
 class Login(View):
-    """ Lets user log in """
+    """ Lets user log in. """
     def get(self, request):
         return render(request, 'login.html')
 
@@ -266,7 +262,7 @@ class Login(View):
 
 
 def send_reset_pw_email(user, email, request):
-    """ Sends user an email with a single-use link """
+    """ Sends user an email with a single-use link. """
     email_subject = "Password reset"
     email_body = render_to_string('emails/remind_password_email.html',
                                   {'user_name': user.first_name,
@@ -283,7 +279,7 @@ def send_reset_pw_email(user, email, request):
 
 
 class RemindPassword(View):
-    """ Invokes 'send_reset_pw_email' function if email is valid """
+    """ Invokes 'send_reset_pw_email' function if email is valid. """
     def get(self, request):
         return render(request, 'remind_password.html')
     def post(self, request):
@@ -312,7 +308,7 @@ class RemindPassword(View):
 
 
 def password_reset_confirm(request, uidb64, token):
-    """ The function is called when a user clicks on a password reset link sent to him via email """
+    """ The function is called when a user clicks on a password reset link sent to him via email. """
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(id=uid)
@@ -327,7 +323,7 @@ def password_reset_confirm(request, uidb64, token):
 
 
 class SetNewPass(View):
-    """ Sets a new password after email confirmation """
+    """ Sets a new password after email confirmation. """
     user_id = ""
 
     def get(self, request):
@@ -363,14 +359,14 @@ class SetNewPass(View):
 
 
 class Logout(View):
-    """ Logs user out """
+    """ Logs user out. """
     def get(self, request):
         logout(request)
         return redirect('/')
 
 
 class Register(FormView):
-    """ Registers a new user """
+    """ Registers a new user. """
     form_class = RegisterForm
     template_name = 'register.html'
     success_url = reverse_lazy('login')
@@ -394,7 +390,7 @@ class Register(FormView):
 
 
 class UserProfile(View):
-    """ Shows user's profile """
+    """ Shows user's profile. """
     def get(self, request):
         user_donations = Donation.objects.filter(user=request.user.id)\
                                          .filter(is_taken="False")
@@ -406,7 +402,7 @@ class UserProfile(View):
 
 
 class UserSettings(View):
-    """ Allows to change user's personal data """
+    """ Allows to change user's personal data. """
     def get(self, request):
         return render(request, 'user_profile_edit.html')
 
@@ -431,7 +427,7 @@ class UserSettings(View):
 
 
 class UserChangePw(FormView):
-    """ Allows a logged in user to change a password to an account """
+    """ Allows a logged in user to change a password to an account. """
     form_class = ChangePwForm
     template_name = 'change_pw.html'
 

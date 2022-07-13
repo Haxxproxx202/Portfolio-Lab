@@ -3,7 +3,7 @@
 {% block content %}
 
 <header class="header--form-page">
-  {% include 'header_index_form.html' %}
+  {% include 'header.html' %}
   {% if messages %}
   {% for message in messages %}
   <div class="message--{{ message.tags }} {% if xxx %}{{ xxx }}{% endif %}" style="width: 100%">{{ message }}</div>
