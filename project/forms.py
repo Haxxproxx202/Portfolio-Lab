@@ -18,7 +18,7 @@ class RegisterForm(forms.Form):
 
 
 class ChangePwForm(forms.Form):
-    old_pw = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Old password'}))
+    current_pw = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Old password'}))
     new_pw_1 = forms.CharField(min_length=6, max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
     new_pw_2 = forms.CharField(min_length=6, max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
 
