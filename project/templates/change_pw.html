@@ -16,6 +16,11 @@
     <div class="message--{{message.tags}}">{{message}}</div>
     {% endfor %}
     {% endif %}
+    dsdsdddddddddddddddddddddddd
+    {% if form.errors %}
+    {{ form.errors }}
+    {% endif %}
+    dddddddddddddddddddddddd
     <h1>Change password form</h1>
     <div class="error--password"></div>
 
@@ -26,10 +31,11 @@
             {% csrf_token %}
 
             <div class="pw--change--box">
+                {{form.as_p}}
 
-                <p>{{form.old_pw}}</p>
-                <p>{{form.new_pw_1}}</p>
-                <p>{{form.new_pw_2}}</p>
+<!--                <p>{{form.current_pw}}</p>-->
+<!--                <p>{{form.new_pw_1}}</p>-->
+<!--                <p>{{form.new_pw_2}}</p>-->
                 <input type="submit" name="niccc" value="Save" style="font-size: 20px">
             </div>
         </form>

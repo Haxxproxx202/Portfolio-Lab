@@ -405,8 +405,8 @@ class UserChangePw(FormView):
             return redirect('profile')
         else:
             messages.add_message(self.request, messages.ERROR, 'Incorrect password. Enter a valid password, please.')
-            return redirect(reverse_lazy('change-pw'))
-
+            # return redirect(reverse_lazy('change-pw'))
+            return render(self.request, 'change_pw.html', {'form': form})
 
 def user_contact(request):
     """ Sends a contact email from user to admin. """
