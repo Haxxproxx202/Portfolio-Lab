@@ -3,38 +3,27 @@
 {% block content %}
 
 <header class="header--form-page">
-
     {% include 'header.html' %}
-    {% if form.non_field_errors %}
-    <div class="message--error">
-        You entered two different passwords. Try again, please.
-    </div>
-<!--    <div class="message&#45;&#45;error">{{ form.non_field_errors }}</div>-->
-    {% endif %}
+
     {% if messages %}
     {% for message in messages %}
     <div class="message--{{message.tags}}">{{message}}</div>
     {% endfor %}
     {% endif %}
+
     {% if form.errors %}
-<!--    {% for key, value in form.errors.items %}-->
     <div class="message--error">Password must contain at least 1 uppercase letter and 1 digit.</div>
-<!--    {% endfor %}-->
     {% endif %}
+
     <h1>Change password form</h1>
-
-
     <div class="pw--change">
-
         <form action="" method="POST">
             {% csrf_token %}
-
             <div class="pw--change--box">
-
                 <p>{{form.current_pw}}</p>
                 <p>{{form.new_pw_1}}</p>
                 <p>{{form.new_pw_2}}</p>
-                <input type="submit" name="niccc" value="Save" style="font-size: 20px">
+                <input type="submit" class="btn btn--save" name="niccc" value="Save">
             </div>
         </form>
     </div>

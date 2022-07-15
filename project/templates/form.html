@@ -50,7 +50,7 @@
         know who is best to pass them on.
       </p>
       <p data-step="3">
-       Choose one to which your shipment will go.
+       Choose one to which your shipment will go to.
       </p>
       <p data-step="4">Enter the address and date.</p>
     </div>
@@ -108,6 +108,7 @@
       <!-- STEP 3 -->
       <div data-step="3">
         <h3>Select the organization you want to help:</h3>
+        <h4 style="font-size: 16px">Based on the items that you want to give away, we separated foundations which collect them. </h4><br><br>
 
         {% for i in institutions %}
         <div class="form-group form-group--checkbox institution" data-categories="{% for c in i.categories.all %}{{c.id}} {% endfor %}">

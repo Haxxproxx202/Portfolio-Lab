@@ -3,6 +3,7 @@ import re
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
+# For some unaccountable reasons I failed to attach it to the project :(
 
 class NumberValidator(object):
     """ Validates whether the password has 1 digit. """
@@ -24,7 +25,7 @@ class NumberValidator(object):
 
 
 class UppercaseValidator(object):
-    """ Validated whether the password has one uppercase letter. """
+    """ Validates whether the password has 1 uppercase letter. """
 
     def validate(self, password, user=None):
         if not re.findall('[A-Z]', password):

@@ -3,7 +3,7 @@ from django.core.validators import ValidationError
 from .validators import UppercaseValidator, NumberValidator
 from django.contrib.auth.password_validation import validate_password
 import re
-from django.contrib import messages
+from django.utils.translation import gettext as _
 
 
 class RegisterForm(forms.Form):
@@ -25,11 +25,13 @@ class RegisterForm(forms.Form):
         else:
             return super().clean()
 
+
 def pw_validator(value):
     if not re.findall('\d', value):
-        raise ValidationError("fail")
+        raise ValidationError('no_digit')
     if not re.findall('[A-Z]', value):
-        raise ValidationError('fail')
+        raise ValidationError('no_uppercase_letter')
+
 
 class ChangePwForm(forms.Form):
     current_pw = forms.CharField(max_length=20,
