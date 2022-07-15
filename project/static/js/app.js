@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$eee = $eee;
       this.$settingsButton = $eee.querySelector(".right--profile input[name='send_button']");
       this.$passwordButton = $eee.querySelector(".pw--change--box input[name='niccc']");
-      this.$settBTN = $sett.querySelector(".guzikUstawien");
+      this.$settBTN = $sett.querySelector(".settings-button");
       this.init();
 
 

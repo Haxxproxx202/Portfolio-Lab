@@ -1152,7 +1152,7 @@ header nav ul.nav--actions .logged-user ul {
 /* line 49, scss/modules/_navigation.scss */
 header nav ul.nav--actions .logged-user ul li {
   border-left: 1px solid #3c3c3c;
-  border-right: 1px solid #3c3c3c;
+  border-right: 4px solid #3c3c3c;
 }
 
 /* line 53, scss/modules/_navigation.scss */

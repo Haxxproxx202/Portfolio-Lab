@@ -5,7 +5,7 @@
         Hello {{user.first_name}}
         <ul class="dropdown">
           <li><a href="{% url 'profile' %}">Profile</a></li>
-          <li><a class="guzikUstawien" href="{% url 'settings' %}">Settings</a></li>
+          <li><a class="settings-button" href="{% url 'settings' %}">Settings</a></li>
             {% if user.is_superuser %}<li><a href="{% url 'admin:index' %}">Control panel</a></li>{% endif %}
             <li><a href="{% url 'logout' %}">Log out</a></li>
         </ul>
