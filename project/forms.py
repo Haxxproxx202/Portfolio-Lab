@@ -27,9 +27,9 @@ class RegisterForm(forms.Form):
 
 def pw_validator(value):
     if not re.findall('\d', value):
-        raise ValidationError("no number in password")
+        raise ValidationError("fail")
     if not re.findall('[A-Z]', value):
-        raise ValidationError('no uppercase letter in password')
+        raise ValidationError('fail')
 
 class ChangePwForm(forms.Form):
     current_pw = forms.CharField(max_length=20,
