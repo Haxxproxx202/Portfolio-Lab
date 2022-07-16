@@ -35,14 +35,17 @@ def pw_validator(value):
 
 class ChangePwForm(forms.Form):
     current_pw = forms.CharField(max_length=20,
-                                 widget=forms.PasswordInput(attrs={'placeholder': 'Old password'}))
+                                 widget=forms.PasswordInput(attrs={'placeholder': 'Old password',
+                                                                   'style': 'border-radius: 5px'}))
     new_pw_1 = forms.CharField(min_length=6,
                                max_length=20,
-                               widget=forms.PasswordInput(attrs={'placeholder': 'New password'}),
+                               widget=forms.PasswordInput(attrs={'placeholder': 'New password',
+                                                                 'style': 'border-radius: 5px'}),
                                validators=[pw_validator])
     new_pw_2 = forms.CharField(min_length=6,
                                max_length=20,
-                               widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
+                               widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password',
+                                                                 'style': 'border-radius: 5px'}))
 
     def clean(self):
         if self.data['new_pw_1'] != self.data['new_pw_2']:
