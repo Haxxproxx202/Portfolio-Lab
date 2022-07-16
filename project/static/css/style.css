@@ -24,6 +24,12 @@ body {
   margin: 0;
 }
 
+input {
+  border-radius: 10px;
+}
+form {
+  border-radius: 10px;
+}
 /**
  * Render the `main` element consistently in IE.
  */
@@ -513,7 +519,7 @@ h2:after {
   border: 1px solid #3c3c3c;
 }
 
-/* line 37, scss/modules/_buttons.scss */
+ /*line 37, scss/modules/_buttons.scss */
 .btn--highlighted {
   border: 1px solid #f9c910;
 }
@@ -553,9 +559,9 @@ form .form-group textarea {
   font-size: 1.8rem;
 }
 
-form .form-group input:not([type="checkbox"]):not([type="radio"]):focus {
-  background-color: #f8efc0;
-}
+/*form .form-group input:not([type="checkbox"]):not([type="radio"]):focus {*/
+/*  background-color: #f8efc0;*/
+/*}*/
 
 .login-page .registration {
   width: border-box;
@@ -624,7 +630,7 @@ form .form-group--checkbox input {
   display: none;
 }
 
-/* line 64, scss/modules/_forms.scss */
+ /*line 64, scss/modules/_forms.scss */
 form .form-group--checkbox input:checked + .checkbox {
   background-color: #f9c910;
 }
@@ -669,7 +675,6 @@ form .form-group--checkbox .description .title {
 form .form-group--checkbox .description .subtitle {
   font-family: 'Merriweather', serif;
   font-weight: 300;
-  font-style: light;
   font-size: 1.2rem;
 }
 
@@ -681,6 +686,7 @@ form .form-group--dropdown .dropdown {
   max-width: 200px;
   min-height: 38px;
   position: relative;
+  transition: all .2s ease-in-out;
 }
 
 /* line 111, scss/modules/_forms.scss */
@@ -740,10 +746,26 @@ form .form-group--dropdown ul {
 form .form-group--dropdown ul li:not(:first-of-type) {
   margin: 10px 0;
 }
+.dropdown a:hover {
+  transform: scale(1.1);
+}
+.dropdown a {
+  transition: all .2s ease-in-out;
+}
+.menu--buttons li {
+  transition: all .2s ease-in-out;
+}
+.menu--buttons li:hover {
+  transform: scale(1.05);
+}
 
 /* line 164, scss/modules/_forms.scss */
 form .form-group--dropdown ul li:last-of-type {
   margin-bottom: 0;
+}
+.dropdown li:last-of-type a:hover {
+  color: red;
+  font-weight: bold;
 }
 
 /* line 173, scss/modules/_forms.scss */
@@ -831,7 +853,7 @@ form.form--contact textarea {
   max-width: none;
 }
 
-/* line 234, scss/modules/_forms.scss */
+/*line 234, scss/modules/_forms.scss */
 form.form--contact input:not([type="checkbox"]):not([type="radio"]):focus,
 form.form--contact textarea:focus {
   border-bottom: 3px solid #f9c910;
@@ -1152,7 +1174,7 @@ header nav ul.nav--actions .logged-user ul {
 /* line 49, scss/modules/_navigation.scss */
 header nav ul.nav--actions .logged-user ul li {
   border-left: 1px solid #3c3c3c;
-  border-right: 4px solid #3c3c3c;
+  border-right: 4px solid darkslategray;
 }
 
 /* line 53, scss/modules/_navigation.scss */
@@ -1891,7 +1913,8 @@ footer .bottom-line--icons a img {
 .right--profile {
 
   flex: 50%;
-  background-color: #9a9a9a;
+  /*background-color: #9a9a9a;*/
+  background-image: url(../images/backgroundpattern2.jpeg);
   font-size: 25px;
   color: white;
   margin-top: 4%;
@@ -1907,7 +1930,7 @@ footer .bottom-line--icons a img {
   margin-bottom: 5px;
 
 }
-.right--profile input:hover {
+.right--profile input:hover:not(.profile) {
   background-color: #f1f1f1;
 }
 
@@ -1921,6 +1944,11 @@ footer .bottom-line--icons a img {
   font-size: 15px;
   color: #1876f2;
   margin: 20px auto 110px auto;
+  transition: all .2s ease-in-out;
+}
+
+.change--pw a:hover {
+  transform: scale(1.2);
 }
 
 .pw--change {
@@ -2051,6 +2079,11 @@ form input{
   background-color: darkslategray;
   color: yellow;
 }
+
+/*.profile:hover {*/
+/*  background: #993333;*/
+
+/*}*/
 
 
 
