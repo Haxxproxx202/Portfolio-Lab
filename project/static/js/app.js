@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 fff.preventDefault()
                 $.ajax({
                     type:'POST',
-                    url:'/create/',
+                    url:'/donation_archiving/',
                     data:{
                       id:$(element2).val(),
                       csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 ff.preventDefault()
                 $.ajax({
                     type:'POST',
-                    url:'/create/',
+                    url:'/donation_archiving/',
                     data:{
                       id:$(element).val(),
                       csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),

@@ -143,6 +143,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'poczta.o2.pl'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'immperial@o2.pl'
-EMAIL_HOST_PASSWORD = env('EMAIL_PASS')
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
 EMAIL_USE_SSL = True
 

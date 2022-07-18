@@ -1916,7 +1916,7 @@ footer .bottom-line--icons a img {
   flex: 50%;
   background-image: url(../images/backgroundpattern2.jpeg);
   font-size: 25px;
-  color: white;
+  color: darkslategray;
   margin-top: 4%;
   border-radius: 10px;
   padding-left: 20px;
