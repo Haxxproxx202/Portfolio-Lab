@@ -7,9 +7,11 @@ INSTITUTION_TYPE = (
     (3, "Local fund-raiser")
 )
 
+
 class ExtendUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     is_user_verified = models.BooleanField(default=False)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=30)
@@ -27,13 +29,14 @@ class Institution(models.Model):
     type = models.IntegerField(choices=INSTITUTION_TYPE, default=1)
     categories = models.ManyToManyField(Category)
 
+
 class Donation(models.Model):
     quantity = models.FloatField()
     categories = models.ManyToManyField(Category)
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
     address = models.CharField(max_length=50)
-    phone_number = models.IntegerField(max_length=13)
-    zip_code = models.IntegerField(max_length=8)
+    phone_number = models.IntegerField()
+    zip_code = models.IntegerField()
     pick_up_date = models.DateField()
     pick_up_time = models.TimeField()
     pick_up_comment = models.CharField(max_length=80)
