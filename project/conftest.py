@@ -6,15 +6,10 @@ from .factories import UserFactory, CategoryFactory, InstitutionFactory
 from mixer.backend.django import mixer
 
 
-# @pytest.fixture(scope="session")
-# def client():
-#     print("To jest fixture")
-#     client = Client()
-#     return client
-#
 @pytest.fixture
 def data():
     return Category.objects.create(name='Potato')
+
 
 @pytest.fixture
 def register_new_user(db):
@@ -24,7 +19,8 @@ def register_new_user(db):
 
 #  --------------------------------------------------------------
 
-@pytest.fixture()
+
+@pytest.fixture
 def new_user_factory(db):
     def create_app_user(
             username: str,
@@ -49,9 +45,11 @@ def new_user_factory(db):
         return user
     return create_app_user
 
+
 @pytest.fixture
 def new_user(db, new_user_factory):
     return new_user_factory("Test_user", "password", "MyName")
+
 
 @pytest.fixture
 def new_user1(db, new_user_factory):
@@ -60,20 +58,22 @@ def new_user1(db, new_user_factory):
 # --------------------------------------------------------------------------
 
 
-
 register(UserFactory)
 register(CategoryFactory)
 register(InstitutionFactory)
+
 
 @pytest.fixture
 def new_user1(db, user_factory):
     user = user_factory.create()
     return user
 
+
 @pytest.fixture
 def user_data():
     return {'email': 'email@gmail.com', "first_name": "firstname",
             'last_name': 'lastname', 'pass1': 'User_pass543', 'pass2': 'User_pass543'}
+
 
 @pytest.fixture
 def user_data_create():

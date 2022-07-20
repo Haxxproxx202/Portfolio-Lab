@@ -2,9 +2,14 @@
 
 {% block content %}
 <header class="header--main-page">
+
 {% include 'header.html' %}
-  {% if form.non_field_errors %}
-  <div class="message--error">{{form.non_field_errors}}</div>
+  {% if form.errors.pass1 %}
+  <div class="message--error">{{form.errors.pass1}}</div>
+  {% endif %}
+
+  {% if form.errors.email %}
+  <div class="message--error">Invalid email</div>
   {% endif %}
     <section class="login-page registration">
       <h2>Registration Form</h2>

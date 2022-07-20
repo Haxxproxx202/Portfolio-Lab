@@ -1,16 +1,24 @@
 from django import forms
-from django.core.validators import ValidationError
+from django.contrib.auth.models import User
+from django.core.validators import ValidationError, EmailValidator
 from .validators import UppercaseValidator, NumberValidator
-from django.contrib.auth.password_validation import validate_password
 import re
 from django.utils.translation import gettext as _
 
 
 def pw_validator(value):
     if not re.findall('\d', value):
-        raise ValidationError('no_digit')
+        print("Blad_1")
+        raise forms.ValidationError('Fail')
     if not re.findall('[A-Z]', value):
-        raise ValidationError('no_uppercase_letter')
+        print("Blad_2")
+        raise forms.ValidationError('Fail')
+
+def email_validator(value):
+    if User.objects.filter(email__iexact=value).exists():
+        print("User exists")
+        raise ValidationError("User with that email already exists")
+
 
 
 class RegisterForm(forms.Form):
@@ -29,9 +37,21 @@ class RegisterForm(forms.Form):
 
     def clean(self):
         if self.data['pass1'] != self.data['pass2']:
-            raise ValidationError("The passwords you entered do not match. Try again, please.")
+            print("Blad_3d")
+            # raise forms.ValidationError(message="The passwords you entered do not match. Try again, please.", code="password")
+            raise forms.ValidationError({'pass1': "raise an error"})
         else:
             return super().clean()
+
+    def clean_email(self):
+        emaill = self.cleaned_data.get('email')
+        if User.objects.filter(email__iexact=emaill).exists():
+            print("User exidddddddsssssssssssssssssssddd")
+            raise ValidationError(message="User with that email already exists", code="email")
+        else:
+            return super().clean()
+
+
 
 
 class ChangePwForm(forms.Form):

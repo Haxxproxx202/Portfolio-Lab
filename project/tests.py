@@ -23,7 +23,6 @@ def test_model(client):
 
 def test_details(client):
     response = client.get('/login/')
-    print("Test3")
     assert response.status_code == 200
 
 
@@ -46,7 +45,6 @@ def test_register(client, register_new_user):
 
 def test_login(client, register_new_user):
     user = register_new_user
-    print(user.password)
     # response1 = client.post('/login/', data={username=user.username, pas})
     client.login(username=user.username, password=user.last_name)
     response = client.get('/login/')
@@ -56,12 +54,10 @@ def test_login(client, register_new_user):
 # ------------------------------------------------
 
 def test_new_user(new_user):
-    print(new_user.first_name)
     assert new_user.first_name == "MyName"
 
 
 def test_new_user1(new_user1):
-    print(new_user1.username)
     count = User.objects.all().count()
     assert True
     assert new_user1.is_staff
@@ -73,9 +69,8 @@ def test_new_user1(new_user1):
 
 def test_institution(db, institution_factory):
     institution = institution_factory.build()
-    print(institution.description)
-    print(institution.type)
     assert True
+
 
 @pytest.mark.django_db
 @pytest.mark.parametrize('param', [
@@ -105,14 +100,15 @@ def test_sign_up(client, user_data):
     assert user_model.objects.count() == 1
     assert response.status_code == 302
 
+
 @pytest.mark.django_db
 def test_user_login(client, create_test_user, user_data_create):
     user_model = User
     assert user_model.objects.count() == 2
     login_url = urls.reverse('login')
-    print(login_url)
     response = client.post(login_url, data=user_data_create)
     assert response.status_code == 302
+
 
 @pytest.mark.django_db
 def test_mixer(client):
