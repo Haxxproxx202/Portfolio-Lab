@@ -4,21 +4,23 @@
 <header class="header--main-page">
 
 {% include 'header.html' %}
-  {% if form.errors.pass1 %}
-  <div class="message--error">{{form.errors.pass1}}</div>
-  {% endif %}
 
   {% if form.errors.email %}
-  <div class="message--error">Invalid email</div>
+  <div class="message--error">User with that email address already exists.</div>
   {% endif %}
+
+  {% if form.errors.pass1 %}
+  <div class="message--error">The password must contain at least 1 uppercase letter and 1 digit.</div>
+  {% endif %}
+
+  {% if form.non_field_errors %}
+  <div class="message--error">The passwords you entered do not match. Try again, please.</div>
+  {% endif %}
+
     <section class="login-page registration">
       <h2>Registration Form</h2>
       <form action="" method="POST">
         {% csrf_token %}
-
-<!--        <div class="form-group">-->
-<!--          {{form.username}} {{form.username.errors}}-->
-<!--        </div>-->
         <div class="form-group">
           {{form.first_name}}
         </div>
@@ -34,7 +36,6 @@
         <div class="form-group">
           {{form.pass2}}
         </div>
-
         <div class="form-group form-group--buttons">
           <a href="{% url 'login' %}" class="btn btn--without-border">Log in</a>
           <button class="btn" type="submit">Sign up</button>

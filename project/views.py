@@ -20,6 +20,7 @@ from .utils import generate_token
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from django.core.validators import validate_email
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class LandingPage(View):
@@ -329,13 +330,13 @@ class AddDonation(View):
             return redirect('/form/')
 
 
-class FormConfirmation(View):
+class FormConfirmation(LoginRequiredMixin, View):
     """ Shows a confirmation template. """
     def get(self, request):
         return render(request, 'form-confirmation.html')
 
 
-class UserProfile(View):
+class UserProfile(LoginRequiredMixin, View):
     """ Shows a user's profile. """
     def get(self, request):
         user_donations = Donation.objects.filter(user=request.user.id)\
@@ -362,7 +363,7 @@ def donation_archiving(request):
         return HttpResponse()
 
 
-class UserSettings(View):
+class UserSettings(LoginRequiredMixin, View):
     """ Allows to change a user's personal data. """
     def get(self, request):
         return render(request, 'user_profile_edit.html')
@@ -387,7 +388,7 @@ class UserSettings(View):
             return render(request, 'user_profile_edit.html')
 
 
-class UserChangePw(FormView):
+class UserChangePw(LoginRequiredMixin, FormView):
     """ Allows a logged in user to change a password to an account. """
     form_class = ChangePwForm
     template_name = 'change_pw.html'

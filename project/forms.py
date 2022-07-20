@@ -8,15 +8,12 @@ from django.utils.translation import gettext as _
 
 def pw_validator(value):
     if not re.findall('\d', value):
-        print("Blad_1")
-        raise forms.ValidationError('Fail')
+        raise ValidationError('Fail')
     if not re.findall('[A-Z]', value):
-        print("Blad_2")
-        raise forms.ValidationError('Fail')
+        raise ValidationError('Fail')
 
 def email_validator(value):
     if User.objects.filter(email__iexact=value).exists():
-        print("User exists")
         raise ValidationError("User with that email already exists")
 
 
@@ -38,18 +35,15 @@ class RegisterForm(forms.Form):
     def clean(self):
         if self.data['pass1'] != self.data['pass2']:
             print("Blad_3d")
-            # raise forms.ValidationError(message="The passwords you entered do not match. Try again, please.", code="password")
-            raise forms.ValidationError({'pass1': "raise an error"})
+            raise forms.ValidationError({'pass1': "The passwords you entered do not match. Try again, please."})
         else:
             return super().clean()
 
     def clean_email(self):
-        emaill = self.cleaned_data.get('email')
-        if User.objects.filter(email__iexact=emaill).exists():
-            print("User exidddddddsssssssssssssssssssddd")
-            raise ValidationError(message="User with that email already exists", code="email")
-        else:
-            return super().clean()
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email__iexact=email).exists():
+            raise ValidationError(message="User with that email already exists.", code="email")
+        return email
 
 
 
