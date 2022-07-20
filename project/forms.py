@@ -6,6 +6,13 @@ import re
 from django.utils.translation import gettext as _
 
 
+def pw_validator(value):
+    if not re.findall('\d', value):
+        raise ValidationError('no_digit')
+    if not re.findall('[A-Z]', value):
+        raise ValidationError('no_uppercase_letter')
+
+
 class RegisterForm(forms.Form):
     first_name = forms.CharField(max_length=20,
                                  min_length=3,
@@ -15,7 +22,8 @@ class RegisterForm(forms.Form):
     email = forms.EmailField(max_length=30,
                              widget=forms.TextInput(attrs={'placeholder': 'Email'}))
     pass1 = forms.CharField(max_length=30,
-                            widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+                            widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
+                            validators=[pw_validator])
     pass2 = forms.CharField(max_length=30,
                             widget=forms.PasswordInput(attrs={'placeholder': "Repeat Password"}))
 
@@ -24,13 +32,6 @@ class RegisterForm(forms.Form):
             raise ValidationError("The passwords you entered do not match. Try again, please.")
         else:
             return super().clean()
-
-
-def pw_validator(value):
-    if not re.findall('\d', value):
-        raise ValidationError('no_digit')
-    if not re.findall('[A-Z]', value):
-        raise ValidationError('no_uppercase_letter')
 
 
 class ChangePwForm(forms.Form):
