@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-  // Checks if all fields in 'Contact us' are filled in
+
+  // Checks if all fields in 'Contact us' section are filled in
   document.querySelector('.send--us--message').addEventListener("click", function (e) {
     let name = document.querySelector(".send--message--form input[name='name']").value;
     let email = document.querySelector(".send--message--form input[name='email']").value;
@@ -8,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (name === "" || email === "" || msg === "") {
       e.preventDefault();
-      alert('All the fields must be filled in.');
+      alert('To send us a message, all the fields must be filled in.');
     }
   })
 
@@ -23,30 +24,27 @@ document.addEventListener("DOMContentLoaded", function() {
                     data:{
                       id:$(element2).val(),
                       csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-
                     },
                     success: function () {
-
                     },
                 });
             });
-            let rodzicc = element2.parentElement.parentElement;
-            if (rodzicc.style.color === "" || rodzicc.style.color === "black") {
-              rodzicc.style.color = "#7F8177"
+            let parentElement2 = element2.parentElement.parentElement;
+            if (parentElement2.style.color === "" || parentElement2.style.color === "black") {
+              parentElement2.style.color = "#7F8177"
             } else {
-              rodzicc.style.color = "black"
+              parentElement2.style.color = "black"
             }
-
             if (element2.style.backgroundColor === "red" || element2.style.backgroundColor === "") {
               element2.style.backgroundColor = "green";
             } else {
               element2.style.backgroundColor = "red"
             }
-
-
         });
     });
-  
+
+
+
   // AJAX - Changes model Donation.is_taken to True
   document.querySelectorAll(".archive--box").forEach(element => {
         element.addEventListener("click", function (e) {
@@ -58,18 +56,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     data:{
                       id:$(element).val(),
                       csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-
                     },
                     success: function () {
-
                     },
                 });
             });
-            let rodzic = element.parentElement.parentElement;
-            if (rodzic.style.color === "" || rodzic.style.color === "black") {
-              rodzic.style.color = "#7F8177"
+            let parentElement = element.parentElement.parentElement;
+            if (parentElement.style.color === "" || parentElement.style.color === "black") {
+              parentElement.style.color = "#7F8177"
             } else {
-              rodzic.style.color = "black"
+              parentElement.style.color = "black"
             }
 
             if (element.style.backgroundColor === "green" || element.style.backgroundColor === "") {
@@ -77,8 +73,6 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
               element.style.backgroundColor = "green"
             }
-
-
         });
     });
 
@@ -89,8 +83,6 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$passwordButton = $eee.querySelector(".pw--change--box input[name='niccc']");
       this.$settBTN = $sett.querySelector(".settings-button");
       this.init();
-
-
     }
 
     init() {
@@ -105,10 +97,8 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       if (window.location.href === "http://127.0.0.1:8000/settings/change-password") {
         this.changePassword()
-
-      // this.$settBTN.addEventListener("click", changeSettings)
-
-      }}
+      }
+    }
 
     changeSettings() {
       function settingsButtonFunction(event) {
@@ -118,9 +108,7 @@ document.addEventListener("DOMContentLoaded", function() {
           pw.value = pw_given;
         }
       }
-
       this.$settingsButton.addEventListener("click", settingsButtonFunction);
-
     };
 
     changePassword(e) {
@@ -134,16 +122,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     };
   }
-  const glowne = document.querySelector(".header--form-page");
+
+  const header = document.querySelector(".header--form-page");
   const settingsDropdown = document.querySelector(".dropdown")
-  if (glowne !== null) {
-    new Settings(glowne, settingsDropdown);
+  if (header !== null) {
+    new Settings(header, settingsDropdown);
   }
 
-  /**
-   * HomePage - Help section
-   */
 
+
+  // HomePage - Help section
   class Help {
     constructor($el) {
       this.$el = $el;
@@ -158,18 +146,14 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     events() {
-      /**
-       * Slide buttons
-       */
+      // Slide buttons
       this.$buttonsContainer.addEventListener("click", e => {
         if (e.target.classList.contains("btn")) {
           this.changeSlide(e);
         }
       });
 
-      /**
-       * Pagination buttons
-       */
+      // Pagination buttons
       this.$el.addEventListener("click", e => {
         if (e.target.classList.contains("btn") && e.target.parentElement.parentElement.classList.contains("help--slides-pagination")) {
           this.changePage(e);
@@ -198,14 +182,10 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
 
-    /**
-     * TODO: callback to page change event
-     */
     changePage(e) {
       e.preventDefault();
       const page = e.target.dataset.page;
-
-      console.log(page);
+      // console.log(page);
     }
   }
   const helpSection = document.querySelector(".help");
@@ -213,9 +193,7 @@ document.addEventListener("DOMContentLoaded", function() {
     new Help(helpSection);
   }
 
-  /**
-   * Form Select
-   */
+  // Form select
   class FormSelect {
     constructor($el) {
       this.$el = $el;
@@ -256,7 +234,6 @@ document.addEventListener("DOMContentLoaded", function() {
           this.valueInput.value = el.value;
           li.classList.add("selected");
         }
-
         this.ul.appendChild(li);
       });
 
@@ -282,9 +259,6 @@ document.addEventListener("DOMContentLoaded", function() {
     new FormSelect(el);
   });
 
-  /**
-   * Hide elements when clicked on document
-   */
   document.addEventListener("click", function(e) {
     const target = e.target;
     const tagName = target.tagName;
@@ -304,9 +278,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  /**
-   * Switching between form steps
-   */
+  // Switches between form steps
   class FormSteps {
     constructor(form) {
       this.$form = form;
@@ -322,17 +294,11 @@ document.addEventListener("DOMContentLoaded", function() {
       this.init();
     }
 
-    /**
-     * Init all methods
-     */
     init() {
       this.events();
       this.updateForm();
     }
 
-    /**
-     * All events that are happening in form
-     */
     events() {
       // Next step
       this.$next.forEach(btn => {
@@ -356,11 +322,6 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$form.querySelector("form").addEventListener("submit", e => this.submit(e));
     }
 
-    /**
-     * Update form front-end
-     * Show next or previous section etc.
-     */
-
     step_1_categories() {
       let inputs = document.querySelector("form").firstElementChild.querySelectorAll("input[name=categories]")
 
@@ -373,11 +334,7 @@ document.addEventListener("DOMContentLoaded", function() {
       return categories
     }
 
-
     step_2_data() {
-
-      // let address = document.querySelector("form").elements.address.value
-
       let form_2_data = {
         "address":document.querySelector("input[name=address]").value,
         "city":document.querySelector("input[name=city]").value,
@@ -390,16 +347,12 @@ document.addEventListener("DOMContentLoaded", function() {
       return form_2_data
     }
 
-
     updateForm() {
-
       this.$step.innerText = this.currentStep;
-
-
       if (this.$step.innerText === "3") {
-
         // console.log(this.step_1_categories(), ' These are the chosen categories...')
         const chosenCategories = this.step_1_categories()
+
         document.querySelectorAll('.institution').forEach(function (div) {
           // console.log(div, div.dataset.categories)
           const myArray = div.dataset.categories.split(" ")
@@ -413,18 +366,18 @@ document.addEventListener("DOMContentLoaded", function() {
       }
 
       if (this.$step.innerText === "4") {
-
-          let categoriesNames = []
+        let categoriesNames = []
         let checkedCategories = document.querySelector("form").firstElementChild.querySelectorAll("input[name=categories]")
+
         checkedCategories.forEach(item => {
           if (item.checked === true) {
             categoriesNames.push(item.nextElementSibling.nextElementSibling.innerText)
-
           }
         })
-        console.log(categoriesNames)
+        // console.log(categoriesNames)
 
         let summaryButton = document.querySelector(".summary-button")
+
         summaryButton.addEventListener("click", evt => {
           let step_3_divs = document.querySelectorAll(".institution")
           let institution = ""
@@ -433,6 +386,7 @@ document.addEventListener("DOMContentLoaded", function() {
               institution = div.querySelector(".title").innerText
             }
           })
+
           document.querySelector(".checked_org").value = institution
           let numberOfBags = document.querySelector("div [data-step='2'] input").value
           let categoriesNamesSpace = categoriesNames.join(', ');
@@ -444,7 +398,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
           let recipient = "For: " + institution
 
-          console.log(numberOfBags)
+          // console.log(numberOfBags)
           let summary = document.querySelector(".summary");
           summary.querySelector(".icon-bag").nextElementSibling.innerText = numberOfBags;
           summary.querySelector(".icon-hand").nextElementSibling.innerText = recipient;
@@ -473,19 +427,14 @@ document.addEventListener("DOMContentLoaded", function() {
         this.$step.parentElement.hidden = this.currentStep >= 6;
     }
 
-    /**
-     * Submit form
-     *
-     * TODO: validation, send data to server
-     */
     submit(e) {
       // e.preventDefault();
       this.currentStep++;
       this.updateForm();
       document.querySelector(".categories_all").value = this.step_1_categories()
-
     }
   }
+
   const form = document.querySelector(".form--steps");
   if (form !== null) {
     new FormSteps(form);
