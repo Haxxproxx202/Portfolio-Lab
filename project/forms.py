@@ -80,14 +80,15 @@ class ChangePwForm(forms.Form):
 class ResetPwForm(forms.Form):
     new_pw_1 = forms.CharField(min_length=6,
                                max_length=20,
-                               widget=forms.PasswordInput(attrs={'placeholder': 'New password'}))
+                               widget=forms.PasswordInput(attrs={'placeholder': 'New password'}),
+                               validators=[pw_validator])
     new_pw_2 = forms.CharField(min_length=6,
                                max_length=20,
                                widget=forms.PasswordInput(attrs={'placeholder': 'Repeat password'}))
 
     def clean(self):
         if self.data['new_pw_1'] != self.data['new_pw_2']:
-            raise ValidationError('You entered two different passwords. Try again, please')
+            raise forms.ValidationError({'new_pw_1': "Fail"})
         else:
             return super().clean()
 

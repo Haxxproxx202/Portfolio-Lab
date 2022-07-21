@@ -266,7 +266,7 @@ class SetNewPass(View):
             response = redirect('new_pw')
             response.set_cookie(key='user_id', value=SetNewPass.user_id)
             messages.add_message(request, messages.WARNING,
-                                 'The passwords you typed in do not match. Try again, please.')
+                                 'Password must contain at least 1 uppercase letter, 1 digit and they both must match.')
             return response
 
 
