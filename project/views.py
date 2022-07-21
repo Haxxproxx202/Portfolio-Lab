@@ -1,10 +1,10 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views import View
 from project.models import Category, Institution, Donation, INSTITUTION_TYPE, ExtendUser
 from django.core.paginator import Paginator
 from django.views.generic import FormView, UpdateView, TemplateView
-from project.forms import RegisterForm, ChangePwForm, ResetPwForm, LoginForm
+from project.forms import RegisterForm, ChangePwForm, ResetPwForm, LoginForm, RemindPasswordForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
@@ -32,22 +32,21 @@ class LandingPage(View):
         for i in donations:
             sacks_qty += i.quantity
 
-        inst_qty = Institution.objects.count()
-        all_fndn = Institution.objects.filter(type="1")
+        foundations_qty = Institution.objects.count()
+        all_foundations = Institution.objects.filter(type="1")
         all_non_govt = Institution.objects.filter(type="2")
         all_local = Institution.objects.filter(type="3")
 
-        pag_fndn = Paginator(all_fndn, 2)
+        pag_fndn = Paginator(all_foundations, 2)
         page = request.GET.get('page')
         pagina = pag_fndn.get_page(page)
 
         ctx = {'sacks_qty': sacks_qty,
-               'inst_qty': inst_qty,
-               'all_fndn': all_fndn,
+               'inst_qty': foundations_qty,
+               'all_fndn': all_foundations,
                'all_non_govt': all_non_govt,
                'all_local': all_local,
                'pagina': pagina}
-
         return render(request, 'index.html', ctx)
 
 
@@ -142,44 +141,68 @@ def activate_user(request, uidb64, token):
     if user and generate_token.check_token(user, token):
         user.extenduser.is_user_verified = True
         user.extenduser.save()
-
         messages.add_message(request, messages.SUCCESS, "Email verified successfully. You can log in now.")
-        return redirect(reverse("login"))
 
+        return redirect(reverse("login"))
     return render(request, 'activation-failed.html', {'user': user})
 
 
-class RemindPassword(View):
-    """ Calls a 'send_reset_pw_email' function if email is valid. """
-    def get(self, request):
-        return render(request, 'remind_password.html')
+# class RemindPassword(View):
+#     """ Calls a 'send_reset_pw_email' function if email is valid. """
+#     def get(self, request):
+#         return render(request, 'remind_password.html')
+#
+#     def post(self, request):
+#         email = request.POST.get("email")
+#         if email:
+#             try:
+#                 validate_email(email)
+#             except ValidationError:
+#                 messages.add_message(request, messages.ERROR,
+#                                      "Enter your email address in format 'username@example.com'")
+#                 return redirect('remind_pw')
+#             else:
+#                 try:
+#                     user = User.objects.get(username=email)
+#                 except ObjectDoesNotExist:
+#                     messages.add_message(request, messages.ERROR,
+#                                          "We couldn't find an account with that email address.")
+#                     return redirect('remind_pw')
+#                 else:
+#                     send_reset_pw_email(user, email, request)
+#                     messages.add_message(request, messages.SUCCESS, "Success! Check your email inbox to continue.")
+#                     return redirect('login')
+#         else:
+#             messages.add_message(request, messages.ERROR, "Enter an email address, please.")
+#             return redirect('remind_pw')
 
-    def post(self, request):
-        email = request.POST.get("email")
-        if email:
+
+class RemindPassword(FormView):
+    """ Calls a 'send_reset_pw_email' function if email is valid. """
+    form_class = RemindPasswordForm
+    template_name = 'remind_password.html'
+    success_url = '/login/'
+
+    def form_valid(self, form):
+        email = form.cleaned_data['username']
+        try:
+            validate_email(email)
+        except ValidationError:
+            return redirect('remind_pw')
+        else:
             try:
-                validate_email(email)
-            except ValidationError:
-                messages.add_message(request, messages.ERROR,
-                                     "Enter your email address in format 'username@example.com'")
+                user = User.objects.get(username=email)
+            except ObjectDoesNotExist:
+                messages.add_message(self.request, messages.ERROR,
+                                     "We couldn't find an account with that email address.")
                 return redirect('remind_pw')
             else:
-                try:
-                    user = User.objects.get(username=email)
-                except ObjectDoesNotExist:
-                    messages.add_message(request, messages.ERROR,
-                                         "We couldn't find an account with that email address.")
-                    return redirect('remind_pw')
-                else:
-                    send_reset_pw_email(user, email, request)
-                    messages.add_message(request, messages.SUCCESS, "Success! Check your email inbox to continue.")
-                    return redirect('login')
-        else:
-            messages.add_message(request, messages.ERROR, "Enter an email address, please.")
-            return redirect('remind_pw')
+                send_reset_pw_email(self.request, user, email)
+                messages.add_message(self.request, messages.SUCCESS, "Success! Check your email inbox to continue.")
+                return super().form_valid(form)
 
 
-def send_reset_pw_email(user, email, request):
+def send_reset_pw_email(request, user, email):
     """ Sends user an email with a single-use link in order to set a new password. """
     email_subject = "Password reset"
     email_body = render_to_string('emails/remind_password_email.html',
@@ -251,11 +274,8 @@ class AddDonation(View):
     """ Adds a donation record made by a user into a database. """
     def get(self, request):
         if request.user.is_authenticated:
-            categories = Category.objects.all()
-            institutions = Institution.objects.all()
-
-            ctx = {'categories': categories,
-                   'institutions': institutions}
+            ctx = {'categories': Category.objects.all(),
+                   'institutions': Institution.objects.all()}
             return render(request, 'form.html', ctx)
         else:
             messages.add_message(request, messages.INFO, "To make a donation you have to log in first.")
@@ -271,49 +291,21 @@ class AddDonation(View):
         date = request.POST.get('data')
         time = request.POST.get('time')
         more_info = request.POST.get('more_info')
-
         cats_list = request.POST.getlist('categories')
 
-        try:
-            postcode = int(postcode)
-        except ValueError:
-            messages.add_message(request, messages.ERROR, "The postcode you entered is incorrect.")
-            return redirect('/form/')
-
-        try:
-            phone = int(phone)
-        except ValueError:
-            messages.add_message(request, messages.ERROR, "The phone number you entered is incorrect.")
-            return redirect('/form/')
-
-        # print(number_of_bags)
-        # print(organization)
-        # print(address)
-        # print(city)
-        # print(isinstance(postcode, int))
-        # print(isinstance(phone, int))
-        # print(date)
-        # print(time)
-        # print(more_info)
-        # print(cats_list)
-
-        if cats_list and number_of_bags != "" and organization and address != "" \
-                and city != "" and postcode != "" and isinstance(postcode, int) \
-                and phone != "" and isinstance(phone, int) and date != "" and time != "":
+        if number_of_bags != "" and organization and address != "" and city != "" \
+                and postcode != "" and phone != "" and date != "" and time != "" and cats_list:
 
             full_address = address + ", " + city
-            org = Institution.objects.get(id=organization)
-            user = User.objects.get(id=request.user.id)
-
             donation = Donation.objects.create(quantity=number_of_bags,
-                                               institution=org,
+                                               institution=Institution.objects.get(id=organization),
                                                address=full_address,
                                                phone_number=phone,
                                                zip_code=postcode,
                                                pick_up_date=date,
                                                pick_up_time=time,
                                                pick_up_comment=more_info,
-                                               user=user)
+                                               user=User.objects.get(id=request.user.id))
             for i in cats_list:
                 cat = Category.objects.get(id=i)
                 donation.categories.add(cat)
@@ -369,7 +361,6 @@ class UserSettings(LoginRequiredMixin, View):
         last_name = request.POST.get('last_name')
         password = request.POST.get('pass')
         if check_password(password, request.user.password):
-
             user = User.objects.get(id=request.user.id)
             user.username = username
             user.first_name = first_name
@@ -377,14 +368,13 @@ class UserSettings(LoginRequiredMixin, View):
             user.save()
 
             return redirect('profile')
-
         else:
             messages.add_message(request, messages.ERROR, "Incorrect password. Enter a valid password, please.")
             return render(request, 'user_profile_edit.html')
 
 
 class UserChangePw(LoginRequiredMixin, FormView):
-    """ Allows a logged in user to change a password to an account. """
+    """ Allows a logged-in user to change a password to an account. """
     form_class = ChangePwForm
     template_name = 'change_pw.html'
 
@@ -397,7 +387,6 @@ class UserChangePw(LoginRequiredMixin, FormView):
             logged_user.set_password(new_pw)
             logged_user.save()
             update_session_auth_hash(self.request, logged_user)
-
             return redirect('profile')
         else:
             messages.add_message(self.request, messages.ERROR, 'Incorrect password. Enter a valid password, please.')
@@ -430,12 +419,9 @@ def user_contact(request):
                             message_edited,
                             fail_silently=False
                             )
-
                 return render(request, 'index.html', {'message_name': message_name})
-
         else:
             messages.add_message(request, messages.WARNING, "Fill in all fields, please.")
             return redirect('/')
-
     else:
         return redirect('/')

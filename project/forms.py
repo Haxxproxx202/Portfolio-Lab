@@ -23,6 +23,10 @@ class LoginForm(forms.Form):
     password = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 
+class RemindPasswordForm(forms.Form):
+    username = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+
+
 class RegisterForm(forms.Form):
     first_name = forms.CharField(max_length=20,
                                  min_length=3,
