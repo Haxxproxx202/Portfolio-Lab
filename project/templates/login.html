@@ -3,11 +3,17 @@
 {% block content %}
 <header class="header--main-page">
 {% include 'header.html' %}
+
   {% if messages %}
   {% for message in messages %}
   <div class="message--{{message.tags}}">{{ message }}</div>
   {% endfor %}
   {% endif %}
+
+   {% if form.errors %}
+  <div class="message--warning">Email must be in a format: 'username@example.com'</div>
+  {% endif %}
+
   <section class="login-page">
     <h2>Log in</h2>
     <form action="" method="POST">

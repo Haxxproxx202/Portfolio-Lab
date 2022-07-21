@@ -1,5 +1,18 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+  // Checks if all fields in 'Contact us' are filled in
+  document.querySelector('.send--us--message').addEventListener("click", function (e) {
+    let name = document.querySelector(".send--message--form input[name='name']").value;
+    let email = document.querySelector(".send--message--form input[name='email']").value;
+    let msg = document.querySelector(".send--message--form textarea").value;
+
+    if (name === "" || email === "" || msg === "") {
+      e.preventDefault();
+      alert('All the fields must be filled in.');
+    }
+  })
+
+  // AJAX - Changes model Donation.is_taken to False
   document.querySelectorAll(".unarchive--box").forEach(element2 => {
         element2.addEventListener("click", function (ee) {
             $(document).one('submit', element2, function (fff) {
@@ -33,7 +46,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         });
     });
-
+  
+  // AJAX - Changes model Donation.is_taken to True
   document.querySelectorAll(".archive--box").forEach(element => {
         element.addEventListener("click", function (e) {
             $(document).one('submit', element, function (ff) {
@@ -126,32 +140,9 @@ document.addEventListener("DOMContentLoaded", function() {
     new Settings(glowne, settingsDropdown);
   }
 
-
-
-
-
-
-
-
-
-
-  // document.querySelectorAll(".table--donations button").forEach(element => {
-  //   element.addEventListener("click", function () {
-  //     this.parentElement.parentElement.style.backgroundColor = "#f1f1f1"
-  //   })
-  // })
-
-
-
-
-
-
   /**
    * HomePage - Help section
    */
-
-
-
 
   class Help {
     constructor($el) {

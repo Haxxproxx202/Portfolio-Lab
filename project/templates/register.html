@@ -6,11 +6,11 @@
 {% include 'header.html' %}
 
   {% if form.errors.email %}
-  <div class="message--error">User with that email address already exists.</div>
+  <div class="message--info">User with that email address already exists.</div>
   {% endif %}
 
   {% if form.errors.pass1 %}
-  <div class="message--error">The password must contain at least 1 uppercase letter and 1 digit.</div>
+  <div class="message--warning">The password must contain at least 1 uppercase letter and 1 digit. Try again, please.</div>
   {% endif %}
 
   {% if form.non_field_errors %}

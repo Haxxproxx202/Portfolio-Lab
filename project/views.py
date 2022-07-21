@@ -147,36 +147,6 @@ def activate_user(request, uidb64, token):
     return render(request, 'activation-failed.html', {'user': user})
 
 
-# class RemindPassword(View):
-#     """ Calls a 'send_reset_pw_email' function if email is valid. """
-#     def get(self, request):
-#         return render(request, 'remind_password.html')
-#
-#     def post(self, request):
-#         email = request.POST.get("email")
-#         if email:
-#             try:
-#                 validate_email(email)
-#             except ValidationError:
-#                 messages.add_message(request, messages.ERROR,
-#                                      "Enter your email address in format 'username@example.com'")
-#                 return redirect('remind_pw')
-#             else:
-#                 try:
-#                     user = User.objects.get(username=email)
-#                 except ObjectDoesNotExist:
-#                     messages.add_message(request, messages.ERROR,
-#                                          "We couldn't find an account with that email address.")
-#                     return redirect('remind_pw')
-#                 else:
-#                     send_reset_pw_email(user, email, request)
-#                     messages.add_message(request, messages.SUCCESS, "Success! Check your email inbox to continue.")
-#                     return redirect('login')
-#         else:
-#             messages.add_message(request, messages.ERROR, "Enter an email address, please.")
-#             return redirect('remind_pw')
-
-
 class RemindPassword(FormView):
     """ Calls a 'send_reset_pw_email' function if email is valid. """
     form_class = RemindPasswordForm
@@ -421,7 +391,7 @@ def user_contact(request):
                             )
                 return render(request, 'index.html', {'message_name': message_name})
         else:
-            messages.add_message(request, messages.WARNING, "Fill in all fields, please.")
+            messages.add_message(request, messages.WARNING, "To send us a message fill in all the fields, please.")
             return redirect('/')
     else:
         return redirect('/')

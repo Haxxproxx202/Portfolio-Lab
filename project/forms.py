@@ -15,16 +15,17 @@ def pw_validator(value):
 
 def email_validator(value):
     if User.objects.filter(email__iexact=value).exists():
-        raise ValidationError("User with that email already exists")
+        raise ValidationError('Fail')
 
 
 class LoginForm(forms.Form):
-    username = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    username = forms.EmailField(max_length=20, widget=forms.TextInput(attrs={'placeholder': 'Email'}))
     password = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 
 class RemindPasswordForm(forms.Form):
-    username = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}),
+                               validators=[email_validator])
 
 
 class RegisterForm(forms.Form):
