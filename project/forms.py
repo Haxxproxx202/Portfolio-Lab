@@ -12,10 +12,15 @@ def pw_validator(value):
     if not re.findall('[A-Z]', value):
         raise ValidationError('Fail')
 
+
 def email_validator(value):
     if User.objects.filter(email__iexact=value).exists():
         raise ValidationError("User with that email already exists")
 
+
+class LoginForm(forms.Form):
+    username = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    password = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 
 class RegisterForm(forms.Form):
@@ -44,8 +49,6 @@ class RegisterForm(forms.Form):
         if User.objects.filter(email__iexact=email).exists():
             raise ValidationError(message="User with that email already exists.", code="email")
         return email
-
-
 
 
 class ChangePwForm(forms.Form):

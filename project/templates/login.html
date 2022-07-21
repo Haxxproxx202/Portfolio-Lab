@@ -5,26 +5,26 @@
 {% include 'header.html' %}
   {% if messages %}
   {% for message in messages %}
-  <div class="message--{{message.tags}}">{{message}}</div>
+  <div class="message--{{message.tags}}">{{ message }}</div>
   {% endfor %}
   {% endif %}
   <section class="login-page">
     <h2>Log in</h2>
-    <div style="color: red; font-size: 16px; text-align: center"><b>{{error}}</b></div>
     <form action="" method="POST">
+
       {% csrf_token %}
       <div class="form-group">
-        <input type="email" name="email" placeholder="Email" />
+        {{ form.username }}
       </div>
       <div class="form-group">
-        <input type="password" name="password" placeholder="Password" />
+        {{ form.password }}
         <a href="{% url 'remind_pw' %}" class="btn btn--small btn--without-border reset-password">Remind password</a>
       </div>
-
       <div class="form-group form-group--buttons scale">
         <a href="{% url 'register' %}" class="btn btn--without-border">Sign up</a>
         <button class="btn" type="submit">Log in</button>
       </div>
+
     </form>
   </section>
 {% endblock %}

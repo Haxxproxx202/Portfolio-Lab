@@ -762,6 +762,10 @@ form .form-group--dropdown ul li:not(:first-of-type) {
   transform: scale(1.05);
 }
 
+.menu--buttons a[id=donation]:hover {
+  color: green;
+}
+
 /* line 164, scss/modules/_forms.scss */
 form .form-group--dropdown ul li:last-of-type {
   margin-bottom: 0;

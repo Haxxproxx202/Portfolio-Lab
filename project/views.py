@@ -4,7 +4,7 @@ from django.views import View
 from project.models import Category, Institution, Donation, INSTITUTION_TYPE, ExtendUser
 from django.core.paginator import Paginator
 from django.views.generic import FormView, UpdateView, TemplateView
-from project.forms import RegisterForm, ChangePwForm, ResetPwForm
+from project.forms import RegisterForm, ChangePwForm, ResetPwForm, LoginForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
@@ -51,40 +51,35 @@ class LandingPage(View):
         return render(request, 'index.html', ctx)
 
 
-class Login(View):
+class Login(FormView):
     """ Lets user log in. """
-    def get(self, request):
-        return render(request, 'login.html')
+    template_name = 'login.html'
+    form_class = LoginForm
+    success_url = '/form/'
 
-    def post(self, request):
-        email = request.POST.get('email')
-        pw = request.POST.get('password')
+    def form_valid(self, form):
+        email = form.cleaned_data['username']
+        password = form.cleaned_data['password']
 
-        if not email or not pw:
+        logged_user = authenticate(username=email, password=password)
 
-            messages.add_message(request, messages.ERROR, "Fill in all fields, please.")
-            return redirect('login')
-
-        logged_user = authenticate(username=email,
-                                   password=pw)
         if logged_user is not None:
             if not logged_user.extenduser.is_user_verified:
-                messages.add_message(request, messages.WARNING,
+                messages.add_message(self.request, messages.WARNING,
                                      "The account is not verified. Check your email inbox, please.")
                 return redirect('login')
             else:
                 login(self.request, logged_user)
-
-            return redirect('donation')
+                return super().form_valid(form)
         else:
             try:
                 User.objects.get(username=email)
             except ObjectDoesNotExist:
-                messages.add_message(request, messages.ERROR,
-                                     "The email and password you entered did not match our records.")
+                messages.add_message(self.request, messages.ERROR,
+                                     "User with that email address does not exist.")
                 return redirect('login')
             else:
-                messages.add_message(request, messages.ERROR,
+                messages.add_message(self.request, messages.ERROR,
                                      "Incorrect password. Enter a valid password to log in, please.")
                 return redirect('login')
 
