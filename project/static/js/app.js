@@ -13,6 +13,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   })
 
+  // Turns "Make a donation' into green color when clicked
+  if (window.location.href === 'http://127.0.0.1:8000/form/') {
+    let item = document.querySelector(".menu--buttons a[id='donation']");
+    item.style.color = "green";
+  }
+
   // AJAX - Changes model Donation.is_taken to False
   document.querySelectorAll(".unarchive--box").forEach(element2 => {
         element2.addEventListener("click", function (ee) {
@@ -42,8 +48,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     });
-
-
 
   // AJAX - Changes model Donation.is_taken to True
   document.querySelectorAll(".archive--box").forEach(element => {
@@ -130,7 +134,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
 
-
   // HomePage - Help section
   class Help {
     constructor($el) {
@@ -185,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function() {
     changePage(e) {
       e.preventDefault();
       const page = e.target.dataset.page;
-      // console.log(page);
+      console.log(page);
     }
   }
   const helpSection = document.querySelector(".help");

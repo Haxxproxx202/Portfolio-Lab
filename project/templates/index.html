@@ -107,7 +107,7 @@
     <p>In our database you will find a list of verified Foundations with which we cooperate. You can check what they do, who they help and what they need.</p>
 
     <ul class="help--slides-items">
-      {% for i in all_fndn %}
+      {% for i in pagina %}
       <li>
         <div class="col">
           <div class="title">Foundation "{{i.name}}"</div>
@@ -123,9 +123,11 @@
 
 
     <ul class="help--slides-pagination">
-      <li><a href="?page={{pagina.}}" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-      <li><a href="?page=2" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-      <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
+      {% for i in num_pages %}
+      <li><a href="?page={{ i }}" class="btn btn--small btn--without-border" data-page="{{ i }}">{{ i }}</a></li>
+<!--      <li><a href="?page=2" class="btn btn&#45;&#45;small btn&#45;&#45;without-border" data-page="2">2</a></li>-->
+<!--      <li><a href="#" class="btn btn&#45;&#45;small btn&#45;&#45;without-border" data-page="3">3</a></li>-->
+      {% endfor %}
     </ul>
 <!--      {% if venues.has_previous %}-->
 <!--        <a href="?page=1/#help">&laquo First</a>-->

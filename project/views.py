@@ -37,16 +37,20 @@ class LandingPage(View):
         all_non_govt = Institution.objects.filter(type="2")
         all_local = Institution.objects.filter(type="3")
 
-        pag_fndn = Paginator(all_foundations, 2)
+        p = Paginator(all_foundations, 2)
         page = request.GET.get('page')
-        pagina = pag_fndn.get_page(page)
+        pagina = p.get_page(page)
+
+        num_pages = [i+1 for i in range(pagina.paginator.num_pages)]
+        print(num_pages)
 
         ctx = {'sacks_qty': sacks_qty,
                'inst_qty': foundations_qty,
                'all_fndn': all_foundations,
                'all_non_govt': all_non_govt,
                'all_local': all_local,
-               'pagina': pagina}
+               'pagina': pagina,
+               'num_pages': num_pages}
         return render(request, 'index.html', ctx)
 
 
@@ -282,7 +286,7 @@ class AddDonation(View):
 
             return render(request, 'form-confirmation.html')
         else:
-            messages.add_message(request, messages.ERROR, "Fill in the entire donation form correctly, please.")
+            messages.add_message(request, messages.ERROR, "To make a donation you have to fill in every field.")
 
             return redirect('/form/')
 
