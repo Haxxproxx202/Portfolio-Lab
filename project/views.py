@@ -37,6 +37,11 @@ class LandingPage(View):
         all_non_govt = Institution.objects.filter(type="2")
         all_local = Institution.objects.filter(type="3")
 
+        foundations_1_2 = all_foundations[:2]
+        foundations_3_4 = all_foundations[2:4]
+        print(foundations_1_2)
+        print(foundations_3_4)
+
         p = Paginator(all_foundations, 2)
         page = request.GET.get('page')
         pagina = p.get_page(page)
@@ -50,7 +55,9 @@ class LandingPage(View):
                'all_non_govt': all_non_govt,
                'all_local': all_local,
                'pagina': pagina,
-               'num_pages': num_pages}
+               'num_pages': num_pages,
+               'foundations_1_2': foundations_1_2,
+               'foundations_3_4': foundations_3_4}
         return render(request, 'index.html', ctx)
 
 

@@ -104,10 +104,13 @@
 
   <!-- SLIDE 1 -->
   <div class="help--slides active" data-id="1">
-    <p>In our database you will find a list of verified Foundations with which we cooperate. You can check what they do, who they help and what they need.</p>
+    <p>In our database you will find a list of verified foundations with which we cooperate. You can check what they do, who they help and what they need.</p>
 
+
+
+<!--    1/2 ------------------------------------>
     <ul class="help--slides-items">
-      {% for i in pagina %}
+      {% for i in foundations_1_2 %}
       <li>
         <div class="col">
           <div class="title">Foundation "{{i.name}}"</div>
@@ -117,36 +120,33 @@
         <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
       </li>
       {% endfor %}
-
     </ul>
+<!--    ---------------------------------------->
+
+
+
+<!--    2/2 ------------------------------------>
+    <ul class="help--slides-items">
+      {% for i in foundations_3_4 %}
+      <li>
+        <div class="col">
+          <div class="title">Foundation "{{i.name}}"</div>
+          <div class="subtitle">Goal and mission: {{i.description}}.</div>
+        </div>
+
+        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
+      </li>
+      {% endfor %}
+    </ul>
+<!--    ---------------------------------------->
 
 
 
     <ul class="help--slides-pagination">
-      {% for i in num_pages %}
-      <li><a href="?page={{ i }}" class="btn btn--small btn--without-border" data-page="{{ i }}">{{ i }}</a></li>
-<!--      <li><a href="?page=2" class="btn btn&#45;&#45;small btn&#45;&#45;without-border" data-page="2">2</a></li>-->
-<!--      <li><a href="#" class="btn btn&#45;&#45;small btn&#45;&#45;without-border" data-page="3">3</a></li>-->
-      {% endfor %}
+      <li><a href="#" class="btn btn--small btn--without-border" data-page="1">1</a></li>
+      <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
     </ul>
-<!--      {% if venues.has_previous %}-->
-<!--        <a href="?page=1/#help">&laquo First</a>-->
-<!--        <a href="?page={{venues.previous_page_number}}">Previous</a>-->
-<!--      {% endif %}-->
-
-<!--      Page {{ venues.number }} of {{ venues.paginator.num_pages }} <br>-->
-
-<!--      {% if venues.has_next %}-->
-<!--      <a href="?page={{ venues.next_page_number }}">next</a>-->
-<!--      <a href="?page={{ venues.paginator.num_pages }}">last</a>-->
-
-
-<!--      {% endif %}-->
-
-
-
   </div>
-
 
   <!-- SLIDE 2 -->
   <div class="help--slides" data-id="2">

@@ -19,8 +19,8 @@ def email_validator(value):
 
 
 class LoginForm(forms.Form):
-    username = forms.EmailField(max_length=20, widget=forms.TextInput(attrs={'placeholder': 'Email'}))
-    password = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    username = forms.EmailField(max_length=30, widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    password = forms.CharField(max_length=30, widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 
 class RemindPasswordForm(forms.Form):
@@ -29,10 +29,10 @@ class RemindPasswordForm(forms.Form):
 
 
 class RegisterForm(forms.Form):
-    first_name = forms.CharField(max_length=20,
+    first_name = forms.CharField(max_length=30,
                                  min_length=3,
                                  widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
-    last_name = forms.CharField(max_length=20,
+    last_name = forms.CharField(max_length=30,
                                 widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
     email = forms.EmailField(max_length=30,
                              widget=forms.TextInput(attrs={'placeholder': 'Email'}))
