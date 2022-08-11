@@ -20,7 +20,7 @@ def email_validator(value):
 
 class LoginForm(forms.Form):
     username = forms.EmailField(max_length=30, widget=forms.TextInput(attrs={'placeholder': 'Email'}))
-    password = forms.CharField(max_length=30, widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    password = forms.CharField(max_length=20, widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 
 class RemindPasswordForm(forms.Form):
@@ -29,22 +29,21 @@ class RemindPasswordForm(forms.Form):
 
 
 class RegisterForm(forms.Form):
-    first_name = forms.CharField(max_length=30,
+    first_name = forms.CharField(max_length=15,
                                  min_length=3,
                                  widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
-    last_name = forms.CharField(max_length=30,
+    last_name = forms.CharField(max_length=15,
                                 widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
     email = forms.EmailField(max_length=30,
                              widget=forms.TextInput(attrs={'placeholder': 'Email'}))
-    pass1 = forms.CharField(max_length=30,
+    pass1 = forms.CharField(max_length=20,
                             widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
                             validators=[pw_validator])
-    pass2 = forms.CharField(max_length=30,
+    pass2 = forms.CharField(max_length=20,
                             widget=forms.PasswordInput(attrs={'placeholder': "Repeat Password"}))
 
     def clean(self):
         if self.data['pass1'] != self.data['pass2']:
-            print("Blad_3d")
             raise forms.ValidationError({'pass1': "The passwords you entered do not match. Try again, please."})
         else:
             return super().clean()

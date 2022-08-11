@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 {% if message_name %}
 <header class="header--main-page">
   {% include 'header.html' %}
-
   <div class="slogan container container--90">
     <div class="slogan--item">
       <h1>
@@ -15,11 +13,11 @@
     </div>
   </div>
 </header>
+
 {% else %}
 <header class="header--main-page">
   {% include 'header.html' %}
-
-{% if messages %}
+  {% if messages %}
   {% for message in messages %}
   <div class="message--{{message.tags}}">{{message}}</div>
   {% endfor %}
@@ -28,14 +26,11 @@
     <div class="slogan--item">
       <h1>
         Start helping!<br />
-        Put your  unwanted items in trusted hands
+        Put your unwanted items in trusted hands
       </h1>
     </div>
   </div>
 </header>
-
-
-
 
 <section id="stats" class="stats">
   <div class="container container--85">
@@ -50,13 +45,11 @@
       <h3>Supported organizations</h3>
       <p>The total amount of organizations, foundations and local fund-raisers that cooperate with us. </p>
     </div>
-
   </div>
 </section>
 
 <section id="steps" class="steps">
   <h2>4 simple steps are enough</h2>
-
   <div class="steps--container">
     <div class="steps--item">
       <span class="icon icon--hands"></span>
@@ -79,6 +72,7 @@
       <p>the courier will arrive at a convenient time</p>
     </div>
   </div>
+
   {% if not user.is_authenticated %}
   <a href="{% url 'register' %}" class="btn btn--large">Create an account</a>
   {% endif %}
@@ -106,8 +100,6 @@
   <div class="help--slides active" data-id="1">
     <p>In our database you will find a list of verified foundations with which we cooperate. You can check what they do, who they help and what they need.</p>
 
-
-
 <!--    1/2 ------------------------------------>
     <ul class="help--slides-items">
       {% for i in foundations_1_2 %}
@@ -123,8 +115,6 @@
     </ul>
 <!--    ---------------------------------------->
 
-
-
 <!--    2/2 ------------------------------------>
     <ul class="help--slides-items">
       {% for i in foundations_3_4 %}
@@ -139,8 +129,6 @@
       {% endfor %}
     </ul>
 <!--    ---------------------------------------->
-
-
 
     <ul class="help--slides-pagination">
       <li><a href="#" class="btn btn--small btn--without-border" data-page="1">1</a></li>
@@ -165,7 +153,6 @@
       {% endfor %}
     </ul>
 
-
     <ul class="help--slides-pagination">
       <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
       <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
@@ -173,7 +160,6 @@
       <li><a href="#" class="btn btn--small btn--without-border" data-page="4">4</a></li>
       <li><a href="#" class="btn btn--small btn--without-border" data-page="5">5</a></li>
     </ul>
-
   </div>
 
   <!-- SLIDE 3 -->
@@ -190,18 +176,13 @@
         <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
       </li>
       {% endfor %}
-
     </ul>
-
 
     <ul class="help--slides-pagination">
       <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
       <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
     </ul>
-
   </div>
 </section>
 {% endif %}
 {% endblock %}
-
-
