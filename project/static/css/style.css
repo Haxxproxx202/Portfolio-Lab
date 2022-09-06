@@ -2092,4 +2092,9 @@ form input{
   color: yellow;
 }
 
+.slogan--item img {
+  width: 20%;
+  height: auto;
+}
+
 /*}*/
