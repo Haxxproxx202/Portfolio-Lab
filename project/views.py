@@ -39,6 +39,12 @@ class LandingPage(View):
 
         foundations_1_2 = all_foundations[:2]
         foundations_3_4 = all_foundations[2:4]
+        non_govt_1_2 = all_non_govt[:2]
+        non_govt_3_4 = all_non_govt[2:4]
+        non_govt_5_6 = all_non_govt[4:6]
+        non_govt_7_8 = all_non_govt[6:8]
+        local_1_2 = all_local[:2]
+        local_3_4 = all_local[2:4]
         print(foundations_1_2)
         print(foundations_3_4)
 
@@ -57,7 +63,13 @@ class LandingPage(View):
                'pagina': pagina,
                'num_pages': num_pages,
                'foundations_1_2': foundations_1_2,
-               'foundations_3_4': foundations_3_4}
+               'foundations_3_4': foundations_3_4,
+               'non_govt_1_2': non_govt_1_2,
+               'non_govt_3_4': non_govt_3_4,
+               'non_govt_5_6': non_govt_5_6,
+               'non_govt_7_8': non_govt_7_8,
+               'local_1_2': local_1_2,
+               'local_3_4': local_3_4}
         return render(request, 'index.html', ctx)
 
 

@@ -136,12 +136,15 @@
     </ul>
   </div>
 
+
+
   <!-- SLIDE 2 -->
   <div class="help--slides" data-id="2">
     <p>In our database you will find a list of verified non-governmental organizations with which we cooperate. You can check what they do, who they help and what they need.
     </p>
-    <ul class="help--slides-items">
-      {% for i in all_non_govt %}
+    <!--    1/4 ------------------------------------>
+    <ul class="help--slides-items" data-page="1">
+      {% for i in non_govt_1_2 %}
       <li>
         <div class="col">
           <div class="title">"{{i.name}}"</div>
@@ -152,21 +155,67 @@
       </li>
       {% endfor %}
     </ul>
+    <!--    ---------------------------------------->
+
+    <!--    2/4 ------------------------------------>
+    <ul class="help--slides-items hidden" data-page="2">
+      {% for i in non_govt_3_4 %}
+      <li>
+        <div class="col">
+          <div class="title">"{{i.name}}"</div>
+          <div class="subtitle">{{i.description}}.</div>
+        </div>
+
+        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
+      </li>
+      {% endfor %}
+    </ul>
+    <!--    ---------------------------------------->
+
+    <!--    3/4 ------------------------------------>
+    <ul class="help--slides-items hidden" data-page="3">
+      {% for i in non_govt_5_6 %}
+      <li>
+        <div class="col">
+          <div class="title">"{{i.name}}"</div>
+          <div class="subtitle">{{i.description}}.</div>
+        </div>
+
+        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
+      </li>
+      {% endfor %}
+    </ul>
+    <!--    ---------------------------------------->
+
+    <!--    4/4 ------------------------------------>
+    <ul class="help--slides-items hidden" data-page="4">
+      {% for i in non_govt_7_8 %}
+      <li>
+        <div class="col">
+          <div class="title">"{{i.name}}"</div>
+          <div class="subtitle">{{i.description}}.</div>
+        </div>
+
+        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
+      </li>
+      {% endfor %}
+    </ul>
+    <!--    ---------------------------------------->
 
     <ul class="help--slides-pagination">
       <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
       <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
       <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
       <li><a href="#" class="btn btn--small btn--without-border" data-page="4">4</a></li>
-      <li><a href="#" class="btn btn--small btn--without-border" data-page="5">5</a></li>
     </ul>
   </div>
 
   <!-- SLIDE 3 -->
   <div class="help--slides" data-id="3">
     <p>In our database you will find a list of verified local fund-raisers with which we cooperate. You can check what they do, who they help and what they need.</p>
-    <ul class="help--slides-items">
-      {% for i in all_local %}
+    <!--    1/2 ------------------------------------>
+    <ul class="help--slides-items" data-page="1">
+      {% for i in local_1_2 %}
       <li>
         <div class="col">
           <div class="title">"{{i.name}}"</div>
@@ -177,6 +226,22 @@
       </li>
       {% endfor %}
     </ul>
+    <!--    ---------------------------------------->
+
+    <!--    2/2 ------------------------------------>
+    <ul class="help--slides-items hidden" data-page="2">
+      {% for i in local_3_4 %}
+      <li>
+        <div class="col">
+          <div class="title">"{{i.name}}"</div>
+          <div class="subtitle">{{i.description}}.</div>
+        </div>
+
+        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
+      </li>
+      {% endfor %}
+    </ul>
+    <!--    ---------------------------------------->
 
     <ul class="help--slides-pagination">
       <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
