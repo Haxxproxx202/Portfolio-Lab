@@ -150,6 +150,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     events() {
       // Slide buttons
+      // let ddd = document.querySelector("help--slides-items")
+      // ddd.querySelector()
+      // this.$slidesContainers.lastElementChild.style.display = "none"
+
       this.$buttonsContainer.addEventListener("click", e => {
         if (e.target.classList.contains("btn")) {
           this.changeSlide(e);
@@ -188,6 +192,18 @@ document.addEventListener("DOMContentLoaded", function() {
     changePage(e) {
       e.preventDefault();
       const page = e.target.dataset.page;
+      const parentPage = e.target.parentElement.parentElement;
+      console.log(parentPage.children);
+      [...parentPage.children].forEach(btn => btn.firstElementChild.classList.remove("active"));
+
+      // works as well
+      // [...parentPage.children].forEach(function (element) {
+      //   element.firstElementChild.classList.remove("active")
+      // })
+      
+
+      // e.target.parentElement.forEach(btn => btn.classList.remove("active"));
+      e.target.classList.add("active");
       console.log(page);
     }
   }
