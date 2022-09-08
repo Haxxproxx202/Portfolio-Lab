@@ -193,16 +193,24 @@ document.addEventListener("DOMContentLoaded", function() {
       e.preventDefault();
       const page = e.target.dataset.page;
       const parentPage = e.target.parentElement.parentElement;
-      console.log(parentPage.children);
+      console.log(parentPage);
       [...parentPage.children].forEach(btn => btn.firstElementChild.classList.remove("active"));
+
+      const pages = parentPage.parentElement.querySelectorAll(".help--slides-items")
+      pages.forEach(function (element) {
+        element.classList.add("hidden");
+        if (element.dataset.page === page) {
+          element.classList.remove("hidden")
+        }
+      })
+
+      console.log(pages)
 
       // works as well
       // [...parentPage.children].forEach(function (element) {
       //   element.firstElementChild.classList.remove("active")
       // })
-      
 
-      // e.target.parentElement.forEach(btn => btn.classList.remove("active"));
       e.target.classList.add("active");
       console.log(page);
     }

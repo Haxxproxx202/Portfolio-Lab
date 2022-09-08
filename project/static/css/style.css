@@ -376,6 +376,10 @@ template {
   display: none;
 }
 
+.hidden {
+  display: none;
+}
+
 /**
  * COLORS
  */
