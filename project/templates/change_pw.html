@@ -7,7 +7,7 @@
 
     {% if messages %}
     {% for message in messages %}
-    <div class="message--{{message.tags}}">{{message}}</div>
+    <div class="message--{{ message.tags }}">{{ message }}</div>
     {% endfor %}
     {% endif %}
 
@@ -20,18 +20,13 @@
         <form action="" method="POST">
             {% csrf_token %}
             <div class="pw--change--box">
-                <p>{{form.current_pw}}</p>
-                <p>{{form.new_pw_1}}</p>
-                <p>{{form.new_pw_2}}</p>
+                <p>{{ form.current_pw }}</p>
+                <p>{{ form.new_pw_1 }}</p>
+                <p>{{ form.new_pw_2 }}</p>
                 <input type="submit" class="btn btn--save profile" name="niccc" value="Save">
             </div>
         </form>
     </div>
-
-
-
-
-
 </header>
 
 {% endblock %}

@@ -10,14 +10,14 @@
   {% endfor %}
   {% endif %}
 
-   {% if form.errors %}
+  {% if form.errors %}
   <div class="message--warning">Email must be in a format: 'username@example.com'</div>
   {% endif %}
 
   <section class="login-page">
     <h2>Log in</h2>
-    <form action="" method="POST">
 
+    <form action="" method="POST">
       {% csrf_token %}
       <div class="form-group">
         {{ form.username }}
@@ -30,8 +30,8 @@
         <a href="{% url 'register' %}" class="btn btn--without-border">Sign up</a>
         <button class="btn" type="submit">Log in</button>
       </div>
-
     </form>
+
   </section>
 {% endblock %}
 </header>

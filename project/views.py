@@ -2,8 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from project.models import Category, Institution, Donation, INSTITUTION_TYPE, ExtendUser
-from django.core.paginator import Paginator
-from django.views.generic import FormView, UpdateView, TemplateView
+# from django.core.paginator import Paginator
+from django.views.generic import FormView
 from project.forms import RegisterForm, ChangePwForm, ResetPwForm, LoginForm, RemindPasswordForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
@@ -45,23 +45,14 @@ class LandingPage(View):
         non_govt_7_8 = all_non_govt[6:8]
         local_1_2 = all_local[:2]
         local_3_4 = all_local[2:4]
-        print(foundations_1_2)
-        print(foundations_3_4)
 
-        p = Paginator(all_foundations, 2)
-        page = request.GET.get('page')
-        pagina = p.get_page(page)
-
-        num_pages = [i+1 for i in range(pagina.paginator.num_pages)]
-        print(num_pages)
+        # Pagination Django (refreshes the site)
+        # p = Paginator(all_foundations, 2)
+        # page = request.GET.get('page')
+        # pagina = p.get_page(page)
 
         ctx = {'sacks_qty': sacks_qty,
                'inst_qty': foundations_qty,
-               'all_fndn': all_foundations,
-               'all_non_govt': all_non_govt,
-               'all_local': all_local,
-               'pagina': pagina,
-               'num_pages': num_pages,
                'foundations_1_2': foundations_1_2,
                'foundations_3_4': foundations_3_4,
                'non_govt_1_2': non_govt_1_2,
@@ -134,6 +125,7 @@ class Register(FormView):
                              'We sent you an email to verify your account.')
 
         return super().form_valid(form)
+
 
 def send_activation_email(user, request):
     """ Sends an activation email. """
@@ -385,6 +377,7 @@ class UserChangePw(LoginRequiredMixin, FormView):
             messages.add_message(self.request, messages.ERROR, 'Incorrect password. Enter a valid password, please.')
             # return redirect(reverse_lazy('change-pw'))
             return render(self.request, 'change_pw.html', {'form': form})
+
 
 def user_contact(request):
     """ Sends a contact email from user to admin. """

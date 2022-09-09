@@ -149,11 +149,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     events() {
-      // Slide buttons
-      // let ddd = document.querySelector("help--slides-items")
-      // ddd.querySelector()
-      // this.$slidesContainers.lastElementChild.style.display = "none"
-
       this.$buttonsContainer.addEventListener("click", e => {
         if (e.target.classList.contains("btn")) {
           this.changeSlide(e);
