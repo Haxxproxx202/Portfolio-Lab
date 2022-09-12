@@ -28,7 +28,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.mysite.com', '*']
 
 
 # Application definition
@@ -157,4 +157,6 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Simplified static file serving.
 # https://pypi.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+USE_X_FORWARDED_HOST = True
 
