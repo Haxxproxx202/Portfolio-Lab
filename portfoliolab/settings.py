@@ -23,7 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6vb2)#!(#552n*gp)%+!#tubrot6w7w(9mc0qtw!36d)1hpbie'
+# SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -82,9 +83,12 @@ DATABASES = {
     'default': {
         'HOST': '127.0.0.1',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASS'),
+        # 'NAME': env('DATABASE_NAME'),
+        # 'USER': env('DATABASE_USER'),
+        # 'PASSWORD': env('DATABASE_PASS'),
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASS'),
     }
 }
 
@@ -140,12 +144,14 @@ ADMINS = (('Przemek', 'immperial@o2.pl'), )
 SERVER_EMAIL = "immperial@o2.pl"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_FROM_USER = env('EMAIL_FROM_USER')
+# EMAIL_FROM_USER = env('EMAIL_FROM_USER')
+EMAIL_FROM_USER = os.getenv('EMAIL_FROM_USER')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'poczta.o2.pl'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'immperial@o2.pl'
-EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
+# EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 EMAIL_USE_SSL = True
 
 # Heroku: Update database configuration from $DATABASE_URL.
