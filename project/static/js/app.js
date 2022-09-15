@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
   })
 
   // Turns "Make a donation' into green color when clicked
-  if (window.location.href === 'http://127.0.0.1:8000/form/') {
+  if (window.location.href === 'https://infinite-castle-99769.herokuapp.com//form/') {
     let item = document.querySelector(".menu--buttons a[id='donation']");
     item.style.color = "green";
   }
@@ -96,10 +96,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     events() {
-      if (window.location.href === "http://127.0.0.1:8000/settings") {
+      if (window.location.href === "https://infinite-castle-99769.herokuapp.com//settings") {
         this.changeSettings()
       }
-      if (window.location.href === "http://127.0.0.1:8000/settings/change-password") {
+      if (window.location.href === "https://infinite-castle-99769.herokuapp.com//settings/change-password") {
         this.changePassword()
       }
     }

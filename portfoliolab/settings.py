@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os.path
 from pathlib import Path
+# import django_heroku
 import environ
 env = environ.Env()
 environ.Env.read_env()
@@ -79,16 +80,30 @@ WSGI_APPLICATION = 'portfoliolab.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'HOST': '127.0.0.1',
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         # 'NAME': env('DATABASE_NAME'),
+#         # 'USER': env('DATABASE_USER'),
+#         # 'PASSWORD': env('DATABASE_PASS'),
+#         'NAME': os.getenv('DATABASE_NAME'),
+#         'USER': os.getenv('DATABASE_USER'),
+#         'PASSWORD': os.getenv('DATABASE_PASS'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'HOST': '127.0.0.1',
+        'HOST': 'ec2-35-168-122-84.compute-1.amazonaws.com',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         # 'NAME': env('DATABASE_NAME'),
         # 'USER': env('DATABASE_USER'),
         # 'PASSWORD': env('DATABASE_PASS'),
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASS'),
+        'NAME': 'da56hl8lukpd4k',
+        'USER': 'bzgrkzmqzsvpgc',
+        'PASSWORD': '584eb1d404d8350423c7d1713c2b185a21745c6a0241445a4d8d23eddd1cb6f3',
+        'PORT': '5432'
     }
 }
 
@@ -135,6 +150,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -155,14 +171,13 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 EMAIL_USE_SSL = True
 
 # Heroku: Update database configuration from $DATABASE_URL.
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# import dj_database_url
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
 
 
 # Simplified static file serving.
 # https://pypi.org/project/whitenoise/
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # USE_X_FORWARDED_HOST = True
 
