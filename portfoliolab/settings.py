@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os.path
 from pathlib import Path
-# import django_heroku
 import environ
 env = environ.Env()
 environ.Env.read_env()
@@ -96,14 +95,14 @@ WSGI_APPLICATION = 'portfoliolab.wsgi.application'
 
 DATABASES = {
     'default': {
-        'HOST': 'ec2-35-168-122-84.compute-1.amazonaws.com',
+        'HOST': 'ec2-54-147-36-107.compute-1.amazonaws.com',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         # 'NAME': env('DATABASE_NAME'),
         # 'USER': env('DATABASE_USER'),
         # 'PASSWORD': env('DATABASE_PASS'),
-        'NAME': 'da56hl8lukpd4k',
-        'USER': 'bzgrkzmqzsvpgc',
-        'PASSWORD': '584eb1d404d8350423c7d1713c2b185a21745c6a0241445a4d8d23eddd1cb6f3',
+        'NAME': 'd7rrq8pp0qevku',
+        'USER': 'juoxwozgkjzszq',
+        'PASSWORD': 'd7d6175a6ea5149632d1ae2d32d49b3c8e72f4d7d0f1bbf8c6742e8ddd8397a0',
         'PORT': '5432'
     }
 }
