@@ -1,2 +1,5 @@
 portfoliolab/.env
 project/training
+venv/
+venv-new/
+/venv-new/
