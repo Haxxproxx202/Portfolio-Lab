@@ -1,21 +1,20 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.core.validators import ValidationError, EmailValidator
-from .validators import UppercaseValidator, NumberValidator
+from django.core.validators import ValidationError
 import re
 from django.utils.translation import gettext as _
 
 
 def pw_validator(value):
-    if not re.findall('\d', value):
-        raise ValidationError('Fail')
-    if not re.findall('[A-Z]', value):
-        raise ValidationError('Fail')
+    if not re.findall(r'\d', value) or not re.findall('[A-Z]', value):
+        raise forms.ValidationError(_('The password must contain at least 1 uppercase letter and 1 digit.'),
+                                    code="Invalid - no uppercase letter or a digit in the password",
+                                    params={'value': '1'})
 
 
 def email_validator(value):
     if User.objects.filter(email__iexact=value).exists():
-        raise ValidationError('Fail')
+        raise ValidationError('Email exists.')
 
 
 class LoginForm(forms.Form):
@@ -44,14 +43,18 @@ class RegisterForm(forms.Form):
 
     def clean(self):
         if self.data['pass1'] != self.data['pass2']:
-            raise forms.ValidationError({'pass1': "The passwords you entered do not match. Try again, please."})
+            raise ValidationError(_("The passwords you entered do not match."),
+                                  code="Invalid - passwords differ",
+                                  params={'value': '2'})
         else:
             return super().clean()
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email__iexact=email).exists():
-            raise ValidationError(message="User with that email already exists.", code="email")
+            raise forms.ValidationError(_("User with that email already exists."),
+                                        code="Invalid - email already in the database",
+                                        params={'value': '3'})
         return email
 
 
@@ -71,7 +74,8 @@ class ChangePwForm(forms.Form):
 
     def clean(self):
         if self.data['new_pw_1'] != self.data['new_pw_2']:
-            raise ValidationError('You entered two different passwords. Try again, please')
+            raise ValidationError(_('You entered two different passwords. Try again, please'),
+                                  code="Invalid - passwords differ")
         else:
 
             return super().clean()
@@ -91,6 +95,3 @@ class ResetPwForm(forms.Form):
             raise forms.ValidationError({'new_pw_1': "Fail"})
         else:
             return super().clean()
-
-
-

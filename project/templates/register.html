@@ -5,16 +5,18 @@
 
 {% include 'header.html' %}
 
-  {% if form.errors.email %}
-  <div class="message--info">User with that email address already exists.</div>
+  {% if 'email' in form.errors %}
+  <div class="message--info">{{ form.errors.email.as_text|cut:"*" }}</div>
   {% endif %}
 
-  {% if form.errors.pass1 %}
-  <div class="message--warning">The password must contain at least 1 uppercase letter and 1 digit. Try again, please.</div>
+  {% for key, value in form.errors.items %}
+  {% if key == '__all__' %}
+  <div class="message--warning">{{ value.as_text|cut:"*" }}</div>
   {% endif %}
+  {% endfor %}
 
-  {% if form.non_field_errors %}
-  <div class="message--error">The passwords you entered do not match. Try again, please.</div>
+  {% if 'pass1' in form.errors %}
+  <div class="message--error">{{ form.errors.pass1.as_text|cut:"*" }}</div>
   {% endif %}
 
     <section class="login-page registration">
