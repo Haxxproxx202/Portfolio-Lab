@@ -13,7 +13,7 @@ def pw_validator(value):
 
 
 def email_validator(value):
-    if User.objects.filter(email__iexact=value).exists():
+    if not User.objects.filter(email__iexact=value).exists():
         raise ValidationError('Email exists.')
 
 
