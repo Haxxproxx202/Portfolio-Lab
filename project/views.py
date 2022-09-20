@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from project.models import Category, Institution, Donation, INSTITUTION_TYPE, ExtendUser
-# from django.core.paginator import Paginator
 from django.views.generic import FormView
 from project.forms import RegisterForm, ChangePwForm, ResetPwForm, LoginForm, RemindPasswordForm
 from django.urls import reverse_lazy, reverse
@@ -173,6 +172,7 @@ class RemindPassword(FormView):
         try:
             validate_email(email)
         except ValidationError:
+            messages.add_message(self.request, messages.ERROR, "The email must be in format: my_email@example.com")
             return redirect('remind_pw')
         else:
             try:

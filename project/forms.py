@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.core.validators import ValidationError
+from django.core.validators import ValidationError, EmailValidator
 import re
 from django.utils.translation import gettext as _
 
@@ -13,8 +13,8 @@ def pw_validator(value):
 
 
 def email_validator(value):
-    if not User.objects.filter(email__iexact=value).exists():
-        raise ValidationError('Email exists.')
+    if not EmailValidator(value):
+        raise ValidationError(_("The email must be in format: my_email@example.com"))
 
 
 class LoginForm(forms.Form):
@@ -23,8 +23,7 @@ class LoginForm(forms.Form):
 
 
 class RemindPasswordForm(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}),
-                               validators=[email_validator])
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
 
 
 class RegisterForm(forms.Form):
