@@ -1,0 +1,9 @@
+<li>
+  <div class="col">
+    <div class="title">"{{ i.name }}"</div>
+    <div class="subtitle">{{ i.description }}</div>
+  </div>
+
+  <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
+</li>
+{% include 'slides-pagination.html' %}

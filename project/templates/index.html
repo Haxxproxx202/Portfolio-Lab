@@ -102,14 +102,7 @@
 <!--    1/2 ------------------------------------>
     <ul class="help--slides-items" data-page="1">
       {% for i in foundations_1_2 %}
-      <li>
-        <div class="col">
-          <div class="title">Foundation "{{i.name}}"</div>
-          <div class="subtitle">Goal and mission: {{ i.description }}.</div>
-        </div>
-
-        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
-      </li>
+        {% include 'slides-pagination.html' %}
       {% endfor %}
     </ul>
 <!--    ---------------------------------------->
@@ -117,14 +110,7 @@
 <!--    2/2 ------------------------------------>
     <ul class="help--slides-items hidden" data-page="2">
       {% for i in foundations_3_4 %}
-      <li>
-        <div class="col">
-          <div class="title">Foundation "{{i.name}}"</div>
-          <div class="subtitle">Goal and mission: {{ i.description }}.</div>
-        </div>
-
-        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
-      </li>
+        {% include 'slides-pagination.html' %}
       {% endfor %}
     </ul>
 <!--    ---------------------------------------->
@@ -142,14 +128,7 @@
     <!--    1/4 ------------------------------------>
     <ul class="help--slides-items" data-page="1">
       {% for i in non_govt_1_2 %}
-      <li>
-        <div class="col">
-          <div class="title">"{{i.name}}"</div>
-          <div class="subtitle">{{i.description}}.</div>
-        </div>
-
-        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
-      </li>
+        {% include 'slides-pagination.html' %}
       {% endfor %}
     </ul>
     <!--    ---------------------------------------->
@@ -157,14 +136,7 @@
     <!--    2/4 ------------------------------------>
     <ul class="help--slides-items hidden" data-page="2">
       {% for i in non_govt_3_4 %}
-      <li>
-        <div class="col">
-          <div class="title">"{{i.name}}"</div>
-          <div class="subtitle">{{i.description}}.</div>
-        </div>
-
-        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
-      </li>
+        {% include 'slides-pagination.html' %}
       {% endfor %}
     </ul>
     <!--    ---------------------------------------->
@@ -172,14 +144,7 @@
     <!--    3/4 ------------------------------------>
     <ul class="help--slides-items hidden" data-page="3">
       {% for i in non_govt_5_6 %}
-      <li>
-        <div class="col">
-          <div class="title">"{{i.name}}"</div>
-          <div class="subtitle">{{i.description}}.</div>
-        </div>
-
-        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
-      </li>
+        {% include 'slides-pagination.html' %}
       {% endfor %}
     </ul>
     <!--    ---------------------------------------->
@@ -187,14 +152,7 @@
     <!--    4/4 ------------------------------------>
     <ul class="help--slides-items hidden" data-page="4">
       {% for i in non_govt_7_8 %}
-      <li>
-        <div class="col">
-          <div class="title">"{{i.name}}"</div>
-          <div class="subtitle">{{i.description}}.</div>
-        </div>
-
-        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
-      </li>
+        {% include 'slides-pagination.html' %}
       {% endfor %}
     </ul>
     <!--    ---------------------------------------->
@@ -214,13 +172,7 @@
     <!--    1/2 ------------------------------------>
     <ul class="help--slides-items" data-page="1">
       {% for i in local_1_2 %}
-      <li>
-        <div class="col">
-          <div class="title">"{{i.name}}"</div>
-          <div class="subtitle">{{i.description}}.</div>
-        </div>
-        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
-      </li>
+        {% include 'slides-pagination.html' %}
       {% endfor %}
     </ul>
     <!--    ---------------------------------------->
@@ -228,13 +180,7 @@
     <!--    2/2 ------------------------------------>
     <ul class="help--slides-items hidden" data-page="2">
       {% for i in local_3_4 %}
-      <li>
-        <div class="col">
-          <div class="title">"{{i.name}}"</div>
-          <div class="subtitle">{{i.description}}.</div>
-        </div>
-        <div class="col"><div class="text">{% for x in i.categories.all %} {{ x.name }}, {% endfor %}</div></div>
-      </li>
+        {% include 'slides-pagination.html' %}
       {% endfor %}
     </ul>
     <!--    ---------------------------------------->
