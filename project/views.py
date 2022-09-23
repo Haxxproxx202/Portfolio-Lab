@@ -239,14 +239,18 @@ class SetNewPass(View):
     def post(self, request):
         form = ResetPwForm(request.POST)
         if form.is_valid():
-
             user = User.objects.get(id=SetNewPass.user_id)
-            SetNewPass.user_id = ""
-            pw1 = form.cleaned_data['new_pw_1']
-            user.set_password(pw1)
-            user.save()
-            messages.add_message(request, messages.SUCCESS, 'The password has been changed.')
-            return redirect('login')
+            if user:
+                SetNewPass.user_id = ""
+                pw1 = form.cleaned_data['new_pw_1']
+                user.set_password(pw1)
+                user.save()
+                messages.add_message(request, messages.SUCCESS, 'The password has been changed.')
+                return redirect('login')
+            else:
+                messages.add_message(request, messages.INFO, 'Try again...')
+                return redirect('new_pw')
+
         else:
             response = redirect('new_pw')
             response.set_cookie(key='user_id', value=SetNewPass.user_id)
