@@ -6,10 +6,11 @@ from django.utils.translation import gettext as _
 
 
 def pw_validator(value):
-    if not re.findall(r'\d', value) or not re.findall('[A-Z]', value):
-        raise forms.ValidationError(_('The password must contain at least 1 uppercase letter and 1 digit.'),
-                                    code="Invalid - no uppercase letter or a digit in the password",
-                                    params={'value': '1'})
+    if not re.findall('\d', value) or not re.findall('[A-Z]', value):
+        raise forms.ValidationError\
+            (message='The password must contain at least 1 uppercase letter and 1 digit.',
+             code="ddd",
+             params={'ddd': 'ddd'})
 
 
 def email_validator(value):

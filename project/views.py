@@ -244,7 +244,7 @@ class SetNewPass(View):
         if form.is_valid():
             try:
                 user = User.objects.get(id=SetNewPass.user_id)
-            except ObjectDoesNotExist:
+            except Exception:
                 messages.add_message(request, messages.ERROR, 'Something went wrong. Try again, please.')
                 return redirect('remind_pw')
             else:
