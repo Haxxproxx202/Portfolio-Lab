@@ -214,7 +214,8 @@ def password_reset_confirm(request, uidb64, token):
     if user and default_token_generator.check_token(user, token):
         messages.add_message(request, messages.SUCCESS, f'Success {user.first_name}! Enter a new password, please.')
         response = redirect('/new_password/')
-        response.set_cookie(key="user_id", value=f"{user.id}")
+        # response.set_cookie(key="user_id", value=f"{user.id}")
+        SetNewPass.user_id = user.id
         return response
     return render(request, 'activation-failed.html')
 
@@ -229,31 +230,28 @@ class SetNewPass(View):
         else:
             form = ResetPwForm()
             response = render(request, 'remind_password_reset.html', {'form': form})
-            if request.COOKIES.get('user_id'):
-                SetNewPass.user_id = request.COOKIES.get('user_id')
-                response.delete_cookie('user_id')
-                return response
-            else:
-                return redirect('landing_page')
+            # if request.COOKIES.get('user_id'):
+            #     SetNewPass.user_id = request.COOKIES.get('user_id')
+            #     response.delete_cookie('user_id')
+            #     return response
+            # else:
+            #     return redirect('landing_page')
+            return response
 
     def post(self, request):
         form = ResetPwForm(request.POST)
+
         if form.is_valid():
             user = User.objects.get(id=SetNewPass.user_id)
-            if user:
-                SetNewPass.user_id = ""
-                pw1 = form.cleaned_data['new_pw_1']
-                user.set_password(pw1)
-                user.save()
-                messages.add_message(request, messages.SUCCESS, 'The password has been changed.')
-                return redirect('login')
-            else:
-                messages.add_message(request, messages.INFO, 'Try again...')
-                return redirect('new_pw')
-
+            SetNewPass.user_id = ""
+            pw1 = form.cleaned_data['new_pw_1']
+            user.set_password(pw1)
+            user.save()
+            messages.add_message(request, messages.SUCCESS, 'The password has been changed.')
+            return redirect('login')
         else:
             response = redirect('new_pw')
-            response.set_cookie(key='user_id', value=SetNewPass.user_id)
+            # response.set_cookie(key='user_id', value=SetNewPass.user_id)
             messages.add_message(request, messages.WARNING,
                                  'Password must contain at least 1 uppercase letter, 1 digit and they both must match.')
             return response
