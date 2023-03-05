@@ -15,7 +15,9 @@ in their profile section and archiving any that they wish for future reference.
 > 
 > 
 > I deployed this app on Heroku, utilizing its cloud-based hosting.
- 
+
+---
+
 Click [here](http://shielded-springs-18089.herokuapp.com/) to visit the page.
 
 
