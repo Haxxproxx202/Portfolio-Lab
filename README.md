@@ -6,10 +6,6 @@ email. When making a donation, users are prompted to fill out a form with all th
 details. Users can keep track of their donations by viewing a list of their past contributions
 in their profile section and archiving any that they wish for future reference.
 
-## Prerequisites
-
-- Python 3.9 or higher
-- Dependencies listed in the 'requirements.txt' file
 
 ## Technologies Used
 - Python/Django
@@ -18,8 +14,8 @@ in their profile section and archiving any that they wish for future reference.
 
 ## Visuals
 
-> I deployed this app on Heroku, utilizing its cloud-based hosting.
+ The project is deployed on Heroku, utilizing its cloud-based hosting.
 
-Click [here](http://shielded-springs-18089.herokuapp.com/) to visit the page.
+**Click [here](http://shielded-springs-18089.herokuapp.com/) to visit the page.**
 
 
